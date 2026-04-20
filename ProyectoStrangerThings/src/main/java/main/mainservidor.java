@@ -1,20 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package main;
 
-/**
- *
- * @author LUGIA
- */
-public class mainservidor {
+import hilos.Creadorninos;
 
-    /**
-     * @param args the command line arguments
-     */
+public class mainservidor {
     public static void main(String[] args) {
-        // TODO code application logic here
+        System.out.println("--- INICIANDO LA BATALLA DE HAWKINS ---");
+
+        // Creamos y arrancamos el hilo generador
+        Creadorninos generador = new Creadorninos();
+        generador.start();
+
+        // TODO: Instanciar las zonas compartidas (Hawkins, Portales, Upside Down)
+        // TODO: Instanciar y arrancar el Demogorgon Alpha (D0000)
     }
-    
 }
