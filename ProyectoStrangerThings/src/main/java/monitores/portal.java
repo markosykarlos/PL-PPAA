@@ -6,13 +6,13 @@ package monitores;
 
 import hilos.*;
 
-public class Portal {
+public class portal {
 
     private int capacidad;
     private int esperando = 0;
     private int cruzando = 0; // cuántos quedan por cruzar del grupo
 
-    public Portal(int capacidad) {
+    public portal(int capacidad) {
         this.capacidad = capacidad;
     }
 
