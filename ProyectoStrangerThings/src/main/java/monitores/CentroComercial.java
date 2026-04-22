@@ -4,16 +4,18 @@
  */
 package monitores;
 
-/**
- *
- * @author marko
- */
+import hilos.*;
+import java.util.ArrayList;
+
 public class CentroComercial {
-    public synchronized void acceder(String id){
-        try{
-            Thread.sleep(1000);
-            System.out.println("El nino " + id + " ha llegado al centro comercial");
-        }
-        catch(InterruptedException e) {}
+    private ArrayList<ninos> ninos = new ArrayList();
+    public synchronized void acceder(ninos nino){
+        System.out.println("El nino " + nino.getIdNino() + " ha llegado al centro comercial");
+        ninos.add(nino);
+    }
+    
+    public synchronized void salir(ninos nino){
+        System.out.println("El nino " + nino.getIdNino() + " ha salido del centro comercial");
+        ninos.remove(nino);
     }
 }

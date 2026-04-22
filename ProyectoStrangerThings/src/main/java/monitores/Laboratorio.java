@@ -4,16 +4,18 @@
  */
 package monitores;
 
-/**
- *
- * @author marko
- */
+import hilos.*;
+import java.util.ArrayList;
+
 public class Laboratorio {
-    public synchronized void acceder(String id){
-        try{
-            Thread.sleep(1000);
-            System.out.println("El nino " + id + " ha llegado al laboratorio");
-        }
-        catch(InterruptedException e) {}
+    private ArrayList<ninos> ninos = new ArrayList();
+    public synchronized void acceder(ninos nino){
+        System.out.println("El nino " + nino.getIdNino() + " ha llegado al laboratorio");
+        ninos.add(nino);
+    }
+    
+    public synchronized void salir(ninos nino){
+        System.out.println("El nino " + nino.getIdNino() + " ha salido del laboratorio");
+        ninos.remove(nino);
     }
 }

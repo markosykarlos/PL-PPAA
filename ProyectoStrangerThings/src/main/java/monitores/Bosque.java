@@ -4,16 +4,17 @@
  */
 package monitores;
 
-/**
- *
- * @author marko
- */
+import hilos.*;
+import java.util.ArrayList;
+
 public class Bosque {
-    public synchronized void acceder(String id){
-        try{
-            Thread.sleep(1000);
-            System.out.println("El nino " + id + " ha llegado al bosque");
-        }
-        catch(InterruptedException e) {}
+    private ArrayList<ninos> ninos = new ArrayList();
+    public void acceder(ninos nino){
+        System.out.println("El nino " + nino.getIdNino() + " ha llegado al bosque");
+        ninos.add(nino);
+    }
+    public void salir(ninos nino){
+        System.out.println("El nino " + nino.getIdNino() + " ha salido del bosque");
+        ninos.remove(nino);
     }
 }
