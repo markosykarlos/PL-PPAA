@@ -32,70 +32,91 @@ public class Nino extends Thread {
         this.alcantarillado = palcantarillado;
     }
 
-    @Override
+@Override
     public void run() {
-        // Por poner algo
-        System.out.println("El niño " + idNino + " ha aparecido en la CALLE PRINCIPAL.");
-        
-        // Esto es para que nos diga cada seg si sigue vivo
-        try {
-            Thread.sleep(1000); 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        sotano.acceder(idNino);
-        int portal = r.nextInt(4);
-        switch (portal) {
-                case 0:
-                    portalBosque.cruzarHaciaUpside(this);
-                    bosque.acceder(this);
-                    try{
-                        Thread.sleep(3000 + r.nextInt(2001));
-                    }
-                    catch(InterruptedException e) {}
-                    System.out.println("El nino " + idNino + " ha recogido 1 unidad de sangre de Vecna");
-                    bosque.salir(this);
-                    portalBosque.cruzarHaciaHawkins(this);
-                    break;
-                case 1:
-                    portalLab.cruzarHaciaUpside(this);
-                    laboratorio.acceder(this);
-                    try{
-                        Thread.sleep(3000 + r.nextInt(2001));
-                    }
-                    catch(InterruptedException e) {}
-                    System.out.println("El nino " + idNino + " ha recogido 1 unidad de sangre de Vecna");
-                    laboratorio.salir(this);
-                    portalLab.cruzarHaciaHawkins(this);
-                    break;
-                case 2:
-                    portalCC.cruzarHaciaUpside(this);
-                    centrocomercial.acceder(this);
-                    try{
-                        Thread.sleep(3000 + r.nextInt(2001));
-                    }
-                    catch(InterruptedException e) {}
-                    System.out.println("El nino " + idNino + " ha recogido 1 unidad de sangre de Vecna");
-                    centrocomercial.salir(this);
-                    portalCC.cruzarHaciaHawkins(this);
-                    break;
-                case 3:
-                    portalAlc.cruzarHaciaUpside(this);
-                    alcantarillado.acceder(this);
-                    try{
-                        Thread.sleep(3000 + r.nextInt(2001));
-                    }
-                    catch(InterruptedException e) {}
-                    System.out.println("El nino " + idNino + " ha recogido 1 unidad de sangre de Vecna");
-                    alcantarillado.salir(this);
-                    portalAlc.cruzarHaciaHawkins(this);
-                    break;
+        // El ciclo se repite iterativamente mientras no esté capturado [cite: 54]
+        while (!capturado) {
+            try {
+                // 1. Deambulan por la CALLE PRINCIPAL entre 3 y 5 segundos 
+                System.out.println("El niño " + idNino + " deambula por la CALLE PRINCIPAL.");
+                Thread.sleep(3000 + r.nextInt(2001));
+                
+                // 2. Acceden al SÓTANO BYERS y permanecen entre 1 y 2 segundos 
+                // sotano.acceder(this); 
+                Thread.sleep(1000 + r.nextInt(1001));
+
+                // 3. Seleccionan un portal y van al Upside Down [cite: 60]
+                int portal = r.nextInt(4);
+                boolean sigueVivo = true;
+
+                switch (portal) {
+                    case 0:
+                        portalBosque.cruzarHaciaUpside(this);
+                        bosque.acceder(this);
+                        Thread.sleep(3000 + r.nextInt(2001)); // Tiempo de recolección [cite: 63]
+                        sigueVivo = bosque.salir(this);       // Intentan salir de la zona
+                        if (sigueVivo) portalBosque.cruzarHaciaHawkins(this);
+                        break;
+                    case 1:
+                        portalLab.cruzarHaciaUpside(this);
+                        laboratorio.acceder(this);
+                        Thread.sleep(3000 + r.nextInt(2001)); // Tiempo de recolección [cite: 63]
+                        sigueVivo = laboratorio.salir(this);
+                        if (sigueVivo) portalLab.cruzarHaciaHawkins(this);
+                        break;
+                    case 2:
+                        portalCC.cruzarHaciaUpside(this);
+                        centrocomercial.acceder(this);
+                        Thread.sleep(3000 + r.nextInt(2001)); // Tiempo de recolección [cite: 63]
+                        sigueVivo = centrocomercial.salir(this);
+                        if (sigueVivo) portalCC.cruzarHaciaHawkins(this);
+                        break;
+                    case 3:
+                        portalAlc.cruzarHaciaUpside(this);
+                        alcantarillado.acceder(this);
+                        Thread.sleep(3000 + r.nextInt(2001)); // Tiempo de recolección [cite: 63]
+                        sigueVivo = alcantarillado.salir(this);
+                        if (sigueVivo) portalAlc.cruzarHaciaHawkins(this);
+                        break;
+                }
+
+                // Si el monitor devolvió false, el niño fue llevado a la colmena. Salimos del bucle.
+                if (!sigueVivo) {
+                    break; 
+                }
+
+                // 4. Si vuelve a Hawkins con vida, descansa en la RADIO WSQK entre 2 y 4 segundos 
+                System.out.println("El niño " + idNino + " depositó la sangre y descansa en RADIO WSQK.");
+                Thread.sleep(2000 + r.nextInt(2001));
+
+            } catch (InterruptedException e) {
+                System.err.println("Hilo del niño " + idNino + " interrumpido.");
+                break; 
             }
+        }
     }
     public String getIdNino() {
         return idNino;
     }
-    
+
+// ... tus atributos (capturado, siendoAtacado) ...
+
+    public boolean isSiendoAtacado() {
+        return siendoAtacado;
+    }
+
+    public void setSiendoAtacado(boolean siendoAtacado) {
+        this.siendoAtacado = siendoAtacado;
+    }
+
+    public boolean isCapturado() {
+        return capturado;
+    }
+
+    public void setCapturado(boolean capturado) {
+        this.capturado = capturado;
+    }
+    /**
         public synchronized boolean serAtacado(int tiempoAtaque) {
         siendoAtacado = true;
         try {
@@ -108,5 +129,5 @@ public class Nino extends Thread {
         }
         siendoAtacado = false;
         return resiste != 0;
-    }
+    } **/
 }
