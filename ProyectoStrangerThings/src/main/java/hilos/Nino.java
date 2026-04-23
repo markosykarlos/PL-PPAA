@@ -1,10 +1,6 @@
 package hilos;
 
 import java.util.Random;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import monitores.*;
 
 public class Nino extends Thread {
@@ -15,119 +11,66 @@ public class Nino extends Thread {
     private CentroComercial centrocomercial;
     private Alcantarillado alcantarillado;
     private Random r = new Random();
-    private Portal portalBosque = new Portal(2);
-    private Portal portalLab = new Portal(3);
-    private Portal portalCC = new Portal(4);
-    private Portal portalAlc = new Portal(2);
+    
+    // Estos deberían ser compartidos (pasados por constructor), aquí los pongo como referencia
+    private Portal portalBosque = new Portal(2); 
+
     private boolean capturado = false;
     private boolean siendoAtacado = false;
     
-    public Nino(int idNumerico, Sotano psotano, Bosque pbosque, Laboratorio plaboratorio, CentroComercial pcentrocomercial, Alcantarillado palcantarillado) {
-        // Esto es para que aparezcan asi N0001, N0023
-        this.idNino = String.format("N%04d", idNumerico);
-        this.sotano = psotano;
-        this.bosque = pbosque;
-        this.laboratorio = plaboratorio;
-        this.centrocomercial = pcentrocomercial;
-        this.alcantarillado = palcantarillado;
+    public Nino(int idNum, Sotano s, Bosque b, Laboratorio l, CentroComercial c, Alcantarillado a) {
+        this.idNino = String.format("N%04d", idNum); // [cite: 52]
+        this.sotano = s;
+        this.bosque = b;
+        this.laboratorio = l;
+        this.centrocomercial = c;
+        this.alcantarillado = a;
     }
 
-@Override
+    @Override
     public void run() {
-        // El ciclo se repite iterativamente mientras no esté capturado [cite: 54]
-        while (!capturado) {
+        while (!capturado) { // [cite: 54]
             try {
-                // 1. Deambulan por la CALLE PRINCIPAL entre 3 y 5 segundos 
-                System.out.println("El niño " + idNino + " deambula por la CALLE PRINCIPAL.");
+                // 1. Calle Principal [cite: 72]
                 Thread.sleep(3000 + r.nextInt(2001));
                 
-                // 2. Acceden al SÓTANO BYERS y permanecen entre 1 y 2 segundos 
+                // 2. Sótano Byers [cite: 58]
                 // sotano.acceder(this); 
                 Thread.sleep(1000 + r.nextInt(1001));
 
-                // 3. Seleccionan un portal y van al Upside Down [cite: 60]
-                int portal = r.nextInt(4);
-                boolean sigueVivo = true;
-
-                switch (portal) {
-                    case 0:
-                        portalBosque.cruzarHaciaUpside(this);
-                        bosque.acceder(this);
-                        Thread.sleep(3000 + r.nextInt(2001)); // Tiempo de recolección [cite: 63]
-                        sigueVivo = bosque.salir(this);       // Intentan salir de la zona
-                        if (sigueVivo) portalBosque.cruzarHaciaHawkins(this);
-                        break;
-                    case 1:
-                        portalLab.cruzarHaciaUpside(this);
-                        laboratorio.acceder(this);
-                        Thread.sleep(3000 + r.nextInt(2001)); // Tiempo de recolección [cite: 63]
-                        sigueVivo = laboratorio.salir(this);
-                        if (sigueVivo) portalLab.cruzarHaciaHawkins(this);
-                        break;
-                    case 2:
-                        portalCC.cruzarHaciaUpside(this);
-                        centrocomercial.acceder(this);
-                        Thread.sleep(3000 + r.nextInt(2001)); // Tiempo de recolección [cite: 63]
-                        sigueVivo = centrocomercial.salir(this);
-                        if (sigueVivo) portalCC.cruzarHaciaHawkins(this);
-                        break;
-                    case 3:
-                        portalAlc.cruzarHaciaUpside(this);
-                        alcantarillado.acceder(this);
-                        Thread.sleep(3000 + r.nextInt(2001)); // Tiempo de recolección [cite: 63]
-                        sigueVivo = alcantarillado.salir(this);
-                        if (sigueVivo) portalAlc.cruzarHaciaHawkins(this);
-                        break;
+                // 3. Upside Down [cite: 60, 63]
+                int p = r.nextInt(4);
+                boolean vive = true;
+                if (p == 0) {
+                    bosque.acceder(this);
+                    Thread.sleep(3000 + r.nextInt(2001)); 
+                    vive = bosque.salir(this); // Bloqueo si hay ataque 
+                } else if (p == 1) {
+                    laboratorio.acceder(this);
+                    Thread.sleep(3000 + r.nextInt(2001));
+                    vive = laboratorio.salir(this);
+                } else if (p == 2) {
+                    centrocomercial.acceder(this);
+                    Thread.sleep(3000 + r.nextInt(2001));
+                    vive = centrocomercial.salir(this);
+                } else {
+                    alcantarillado.acceder(this);
+                    Thread.sleep(3000 + r.nextInt(2001));
+                    vive = alcantarillado.salir(this);
                 }
 
-                // Si el monitor devolvió false, el niño fue llevado a la colmena. Salimos del bucle.
-                if (!sigueVivo) {
-                    break; 
-                }
+                if (!vive) break; // Fin del hilo si es capturado [cite: 68]
 
-                // 4. Si vuelve a Hawkins con vida, descansa en la RADIO WSQK entre 2 y 4 segundos 
-                System.out.println("El niño " + idNino + " depositó la sangre y descansa en RADIO WSQK.");
+                // 4. Radio WSQK [cite: 71]
                 Thread.sleep(2000 + r.nextInt(2001));
 
-            } catch (InterruptedException e) {
-                System.err.println("Hilo del niño " + idNino + " interrumpido.");
-                break; 
-            }
+            } catch (InterruptedException e) { break; }
         }
     }
-    public String getIdNino() {
-        return idNino;
-    }
 
-// ... tus atributos (capturado, siendoAtacado) ...
-
-    public boolean isSiendoAtacado() {
-        return siendoAtacado;
-    }
-
-    public void setSiendoAtacado(boolean siendoAtacado) {
-        this.siendoAtacado = siendoAtacado;
-    }
-
-    public boolean isCapturado() {
-        return capturado;
-    }
-
-    public void setCapturado(boolean capturado) {
-        this.capturado = capturado;
-    }
-    /**
-        public synchronized boolean serAtacado(int tiempoAtaque) {
-        siendoAtacado = true;
-        try {
-            Thread.sleep(tiempoAtaque);
-        } catch (InterruptedException e) {}
-        // probabilidad 2/3 de sobrevivir
-        int resiste = r.nextInt(3);
-        if (resiste == 0) {
-            capturado = true;
-        }
-        siendoAtacado = false;
-        return resiste != 0;
-    } **/
+    public String getIdNino() { return idNino; }
+    public boolean isSiendoAtacado() { return siendoAtacado; }
+    public void setSiendoAtacado(boolean b) { siendoAtacado = b; }
+    public boolean isCapturado() { return capturado; }
+    public void setCapturado(boolean b) { capturado = b; }
 }
