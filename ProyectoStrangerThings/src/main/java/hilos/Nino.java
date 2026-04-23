@@ -10,16 +10,20 @@ public class Nino extends Thread {
     private Laboratorio laboratorio;
     private CentroComercial centrocomercial;
     private Alcantarillado alcantarillado;
+    private Portal portalBosque = new Portal(2);
+    private Portal portalLab = new Portal(3);
+    private Portal portalCC = new Portal(4);
+    private Portal portalAlc = new Portal(2);
     private Random r = new Random();
     
     // Estos deberían ser compartidos (pasados por constructor), aquí los pongo como referencia
-    private Portal portalBosque = new Portal(2); 
+    //private Portal portalBosque = new Portal(2); 
 
     private boolean capturado = false;
     private boolean siendoAtacado = false;
     
     public Nino(int idNum, Sotano s, Bosque b, Laboratorio l, CentroComercial c, Alcantarillado a) {
-        this.idNino = String.format("N%04d", idNum); // [cite: 52]
+        this.idNino = String.format("N%04d", idNum);
         this.sotano = s;
         this.bosque = b;
         this.laboratorio = l;
@@ -29,41 +33,44 @@ public class Nino extends Thread {
 
     @Override
     public void run() {
-        while (!capturado) { // [cite: 54]
+        while (!capturado) {
             try {
-                // 1. Calle Principal [cite: 72]
                 Thread.sleep(3000 + r.nextInt(2001));
-                
-                // 2. Sótano Byers [cite: 58]
-                // sotano.acceder(this); 
-                Thread.sleep(1000 + r.nextInt(1001));
-
-                // 3. Upside Down [cite: 60, 63]
-                int p = r.nextInt(4);
-                boolean vive = true;
-                if (p == 0) {
-                    bosque.acceder(this);
-                    Thread.sleep(3000 + r.nextInt(2001)); 
-                    vive = bosque.salir(this); // Bloqueo si hay ataque 
-                } else if (p == 1) {
-                    laboratorio.acceder(this);
-                    Thread.sleep(3000 + r.nextInt(2001));
-                    vive = laboratorio.salir(this);
-                } else if (p == 2) {
-                    centrocomercial.acceder(this);
-                    Thread.sleep(3000 + r.nextInt(2001));
-                    vive = centrocomercial.salir(this);
-                } else {
-                    alcantarillado.acceder(this);
-                    Thread.sleep(3000 + r.nextInt(2001));
-                    vive = alcantarillado.salir(this);
-                }
-
-                if (!vive) break; // Fin del hilo si es capturado [cite: 68]
-
-                // 4. Radio WSQK [cite: 71]
+                sotano.acceder(this);
+                 int portal = r.nextInt(4);
+                boolean sigueVivo = true;
+                switch (portal) {
+                    case 0:
+                        portalBosque.cruzarHaciaUpside(this);
+                        bosque.acceder(this);
+                        Thread.sleep(3000 + r.nextInt(2001));
+                        sigueVivo = bosque.salir(this);
+                        if (sigueVivo){portalBosque.cruzarHaciaHawkins(this);}
+                        break;
+                    case 1:
+                        portalLab.cruzarHaciaUpside(this);
+                        laboratorio.acceder(this);
+                        Thread.sleep(3000 + r.nextInt(2001));
+                        sigueVivo = laboratorio.salir(this);
+                        if (sigueVivo){portalLab.cruzarHaciaHawkins(this);}
+                        break;
+                    case 2:
+                        portalCC.cruzarHaciaUpside(this);
+                        centrocomercial.acceder(this);
+                        Thread.sleep(3000 + r.nextInt(2001));
+                        sigueVivo = centrocomercial.salir(this);
+                        if (sigueVivo){portalCC.cruzarHaciaHawkins(this);}
+                        break;
+                    case 3:
+                        portalAlc.cruzarHaciaUpside(this);
+                        alcantarillado.acceder(this);
+                        Thread.sleep(3000 + r.nextInt(2001));
+                        sigueVivo = alcantarillado.salir(this);
+                        if (sigueVivo){portalAlc.cruzarHaciaHawkins(this);}
+                        break;
+                if (!vive) break;
                 Thread.sleep(2000 + r.nextInt(2001));
-
+                }
             } catch (InterruptedException e) { break; }
         }
     }

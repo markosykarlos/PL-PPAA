@@ -6,16 +6,14 @@ package monitores;
 
 import java.util.Random;
 
-/**
- *
- * @author marko
- */
+import hilos.*;
+
 public class Sotano {
     private Random r = new Random();
-    public void acceder(String id){
+    public void acceder(Nino nino){
         try{
             Thread.sleep(1000 + r.nextInt(1001));
-            System.out.println("El nino " + id + " ha llegado al sotano");
+            System.out.println("El nino " + nino.getIdNino() + " ha llegado al sotano");
         }
         catch(InterruptedException e) {}
     }
