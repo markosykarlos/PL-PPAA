@@ -9,8 +9,10 @@ import hilos.*;
 public class portal {
 
     private int capacidad;
-    private int esperando = 0;
-    private int cruzando = 0; // cuántos quedan por cruzar del grupo
+    private int esperandoIda = 0;
+    private int esperandoVuelta = 0;
+    private int cruzando = 0;
+    private boolean ocupado = false;
 
     public portal(int capacidad) {
         this.capacidad = capacidad;
@@ -18,37 +20,43 @@ public class portal {
 
     public synchronized void cruzarHaciaUpside(ninos n) {
         try {
-            // 1. Llega al portal
-            esperando++;
-            System.out.println(n.getIdNino() + " esperando en portal (" + esperando + "/" + capacidad + ")");
-
-            // 2. Esperar a formar grupo
-            while (esperando < capacidad) {
+            esperandoIda++;
+            System.out.println(n.getIdNino() + " esperando en portal (" + esperandoIda + "/" + capacidad + ")");
+            while (esperandoIda < capacidad || esperandoVuelta > 0) {
                 wait();
             }
-
-            // 3. El último que llega activa el grupo
-            if (esperando == capacidad) {
-                cruzando = capacidad; // se habilita el grupo
-                esperando = 0;        // reset para el siguiente grupo
-                notifyAll();          // despierta a todos
+            if (esperandoIda == capacidad) {
+                cruzando = capacidad;
+                esperandoIda = 0;
+                notifyAll();
             }
-
-            // 4. Paso de uno en uno
-            while (cruzando == 0) {
+            while (cruzando == 0 || ocupado) {
                 wait();
             }
-
-            cruzando--; // este niño está cruzando
-
+            ocupado = true;
+            cruzando--;
             System.out.println(n.getIdNino() + " cruzando portal...");
-            Thread.sleep(1000); // tiempo de cruce
-
-            // 5. Avisar al siguiente
+            Thread.sleep(1000);
+            ocupado = false;
             notifyAll();
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    } catch (InterruptedException e) {}
+}
+    
+    public synchronized void cruzarHaciaHawkins(ninos n) {
+    try {
+        esperandoVuelta++;
+        System.out.println(n.getIdNino() + " quiere volver a Hawkins");
+        while (ocupado) {
+            wait();
         }
+        ocupado = true;
+        esperandoVuelta--;
+        System.out.println(n.getIdNino() + " cruzando de vuelta...");
+        Thread.sleep(1000);
+        ocupado = false;
+        notifyAll();
+    } catch (InterruptedException e) {
+        e.printStackTrace();
     }
+}
 }
