@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import monitores.*;
 
-public class ninos extends Thread {
+public class Nino extends Thread {
     private String idNino;
     private Sotano sotano;
     private Bosque bosque;
@@ -15,14 +15,14 @@ public class ninos extends Thread {
     private CentroComercial centrocomercial;
     private Alcantarillado alcantarillado;
     private Random r = new Random();
-    private portal portalBosque = new portal(2);
-    private portal portalLab = new portal(3);
-    private portal portalCC = new portal(4);
-    private portal portalAlc = new portal(2);
+    private Portal portalBosque = new Portal(2);
+    private Portal portalLab = new Portal(3);
+    private Portal portalCC = new Portal(4);
+    private Portal portalAlc = new Portal(2);
     private boolean capturado = false;
     private boolean siendoAtacado = false;
     
-    public ninos(int idNumerico, Sotano psotano, Bosque pbosque, Laboratorio plaboratorio, CentroComercial pcentrocomercial, Alcantarillado palcantarillado) {
+    public Nino(int idNumerico, Sotano psotano, Bosque pbosque, Laboratorio plaboratorio, CentroComercial pcentrocomercial, Alcantarillado palcantarillado) {
         // Esto es para que aparezcan asi N0001, N0023
         this.idNino = String.format("N%04d", idNumerico);
         this.sotano = psotano;

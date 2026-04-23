@@ -27,7 +27,7 @@ public class Creadorninos extends Thread {
         System.out.println("Iniciando la generación de niños...");
         
         for (int i = 1; i <= TOTAL_NINOS; i++) {
-            ninos nuevoNino = new ninos(i, sotano, bosque, laboratorio, centrocomercial, alcantarillado);
+            Nino nuevoNino = new Nino(i, sotano, bosque, laboratorio, centrocomercial, alcantarillado);
             nuevoNino.start();
 
             try {

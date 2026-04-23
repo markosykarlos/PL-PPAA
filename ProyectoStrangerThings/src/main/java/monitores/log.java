@@ -6,11 +6,11 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class log {
+public class Log {
     private String rutaArchivo = "hawkins.txt"; 
     private DateTimeFormatter formatoFecha;
 
-    public log() {
+    public Log() {
         this.formatoFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     }
 

@@ -4,7 +4,7 @@ import hilos.Creadorninos;
 import monitores.*;
 import interfaz.VentanaServidor; // Importamos la ventana
 
-public class mainservidor {
+public class Mainservidor {
     public static void main(String[] args) {
         
         // 1. Mostrar la ventana lo primero de todo

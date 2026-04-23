@@ -6,7 +6,7 @@ package monitores;
 
 import hilos.*;
 
-public class portal {
+public class Portal {
 
     private int capacidad;
     private int esperandoIda = 0;
@@ -14,11 +14,11 @@ public class portal {
     private int cruzando = 0;
     private boolean ocupado = false;
 
-    public portal(int capacidad) {
+    public Portal(int capacidad) {
         this.capacidad = capacidad;
     }
 
-    public synchronized void cruzarHaciaUpside(ninos n) {
+    public synchronized void cruzarHaciaUpside(Nino n) {
         try {
             esperandoIda++;
             System.out.println(n.getIdNino() + " esperando en portal (" + esperandoIda + "/" + capacidad + ")");
@@ -42,7 +42,7 @@ public class portal {
     } catch (InterruptedException e) {}
 }
     
-    public synchronized void cruzarHaciaHawkins(ninos n) {
+    public synchronized void cruzarHaciaHawkins(Nino n) {
     try {
         esperandoVuelta++;
         System.out.println(n.getIdNino() + " quiere volver a Hawkins");

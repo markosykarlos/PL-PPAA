@@ -8,7 +8,7 @@ package main;
  *
  * @author LUGIA
  */
-public class maincliente {
+public class Maincliente {
 
     /**
      * @param args the command line arguments

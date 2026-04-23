@@ -8,6 +8,6 @@ package hilos;
  *
  * @author LUGIA
  */
-public class demogorgon extends Thread{
+public class Demogorgon extends Thread{
     
 }

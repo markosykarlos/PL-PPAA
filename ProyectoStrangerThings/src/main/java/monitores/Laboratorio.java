@@ -8,13 +8,13 @@ import hilos.*;
 import java.util.ArrayList;
 
 public class Laboratorio {
-    private ArrayList<ninos> ninos = new ArrayList();
-    public synchronized void acceder(ninos nino){
+    private ArrayList<Nino> ninos = new ArrayList();
+    public synchronized void acceder(Nino nino){
         System.out.println("El nino " + nino.getIdNino() + " ha llegado al laboratorio");
         ninos.add(nino);
     }
     
-    public synchronized void salir(ninos nino){
+    public synchronized void salir(Nino nino){
         System.out.println("El nino " + nino.getIdNino() + " ha salido del laboratorio");
         ninos.remove(nino);
     }

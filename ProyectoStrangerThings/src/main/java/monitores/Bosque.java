@@ -8,12 +8,12 @@ import hilos.*;
 import java.util.ArrayList;
 
 public class Bosque {
-    private ArrayList<ninos> ninos = new ArrayList();
-    public void acceder(ninos nino){
+    private ArrayList<Nino> ninos = new ArrayList();
+    public void acceder(Nino nino){
         System.out.println("El nino " + nino.getIdNino() + " ha llegado al bosque");
         ninos.add(nino);
     }
-    public void salir(ninos nino){
+    public void salir(Nino nino){
         System.out.println("El nino " + nino.getIdNino() + " ha salido del bosque");
         ninos.remove(nino);
     }

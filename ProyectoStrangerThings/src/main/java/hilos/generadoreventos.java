@@ -3,11 +3,11 @@ package hilos;
 import monitores.EstadoGlobal;
 import java.util.Random;
 
-public class generadoreventos extends Thread {
+public class Generadoreventos extends Thread {
     private EstadoGlobal estado;
     private Random random;
 
-    public generadoreventos(EstadoGlobal estado) {
+    public Generadoreventos(EstadoGlobal estado) {
         this.estado = estado;
         this.random = new Random();
     }

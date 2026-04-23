@@ -8,6 +8,6 @@ package monitores;
  *
  * @author LUGIA
  */
-public class colmena {
+public class Colmena {
     
 }
