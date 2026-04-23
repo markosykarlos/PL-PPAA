@@ -11,61 +11,88 @@ public class Nino extends Thread {
     private CentroComercial centrocomercial;
     private Alcantarillado alcantarillado;
     private Random r = new Random();
-    
-    // Estos deberían ser compartidos (pasados por constructor), aquí los pongo como referencia
-    private Portal portalBosque = new Portal(2); 
-
+    private Portal portalBosque; 
+    private Portal portalLab;
+    private Portal portalCC;
+    private Portal portalAlc;
     private boolean capturado = false;
     private boolean siendoAtacado = false;
     
-    public Nino(int idNum, Sotano s, Bosque b, Laboratorio l, CentroComercial c, Alcantarillado a) {
-        this.idNino = String.format("N%04d", idNum); // [cite: 52]
-        this.sotano = s;
-        this.bosque = b;
-        this.laboratorio = l;
-        this.centrocomercial = c;
-        this.alcantarillado = a;
+    public Nino(int idNumerico, Sotano psotano, Bosque pbosque, Laboratorio plaboratorio, CentroComercial pcentrocomercial, 
+    Alcantarillado palcantarillado, Portal pportalBosque, Portal pportalLab, Portal pportalCC, Portal pportalAlc) {
+        // Esto es para que aparezcan asi N0001, N0023
+        this.idNino = String.format("N%04d", idNumerico);
+        this.sotano = psotano;
+        this.bosque = pbosque;
+        this.laboratorio = plaboratorio;
+        this.centrocomercial = pcentrocomercial;
+        this.alcantarillado = palcantarillado;
+        this.portalBosque = pportalBosque;
+        this.portalLab = pportalLab;
+        this.portalCC = pportalCC;
+        this.portalAlc = pportalAlc;
     }
-
-    @Override
-    public void run() {
-        while (!capturado) { // [cite: 54]
-            try {
-                // 1. Calle Principal [cite: 72]
-                Thread.sleep(3000 + r.nextInt(2001));
-                
-                // 2. Sótano Byers [cite: 58]
-                // sotano.acceder(this); 
+    public void run(){
+        while(true){
+            System.out.println("El nino " + idNino + " ha llegado al sotano");
+            try{
                 Thread.sleep(1000 + r.nextInt(1001));
-
-                // 3. Upside Down [cite: 60, 63]
-                int p = r.nextInt(4);
-                boolean vive = true;
-                if (p == 0) {
+            int portal = r.nextInt(4);
+            switch(portal){
+                case 0:
+                    portalBosque.cruzarHaciaUpside(this);
                     bosque.acceder(this);
-                    Thread.sleep(3000 + r.nextInt(2001)); 
-                    vive = bosque.salir(this); // Bloqueo si hay ataque 
-                } else if (p == 1) {
+                    Thread.sleep(3000 + r.nextInt(2001));
+                    System.out.println("El nino " + idNino + " ha recogido 1 unidad de sangre de Vecna");
+                    bosque.salir(this);
+                    portalBosque.cruzarHaciaHawkins(this);
+                    break;
+                case 1:
+                    portalLab.cruzarHaciaUpside(this);
                     laboratorio.acceder(this);
                     Thread.sleep(3000 + r.nextInt(2001));
-                    vive = laboratorio.salir(this);
-                } else if (p == 2) {
+                    System.out.println("El nino " + idNino + " ha recogido 1 unidad de sangre de Vecna");
+                    laboratorio.salir(this);
+                    portalLab.cruzarHaciaHawkins(this);
+                    break;
+                case 2:
+                    portalCC.cruzarHaciaUpside(this);
                     centrocomercial.acceder(this);
                     Thread.sleep(3000 + r.nextInt(2001));
-                    vive = centrocomercial.salir(this);
-                } else {
+                    System.out.println("El nino " + idNino + " ha recogido 1 unidad de sangre de Vecna");
+                    centrocomercial.salir(this);
+                    portalCC.cruzarHaciaHawkins(this);
+                    break;
+                case 3:
+                    portalAlc.cruzarHaciaUpside(this);
                     alcantarillado.acceder(this);
                     Thread.sleep(3000 + r.nextInt(2001));
-                    vive = alcantarillado.salir(this);
-                }
-
-                if (!vive) break; // Fin del hilo si es capturado [cite: 68]
-
-                // 4. Radio WSQK [cite: 71]
-                Thread.sleep(2000 + r.nextInt(2001));
-
-            } catch (InterruptedException e) { break; }
+                    System.out.println("El nino " + idNino + " ha recogido 1 unidad de sangre de Vecna");
+                    alcantarillado.salir(this);
+                    portalAlc.cruzarHaciaHawkins(this);
+                    break;
+            }
+            System.out.println("El nino " + idNino + " ha llegado a la RADIO WSQK");
+            Thread.sleep(2000 + r.nextInt(2001));
+            System.out.println("El nino " + idNino + " esta deambulando por la calle principal");
+            Thread.sleep(3000 + r.nextInt(2001));
+            }
+            catch(InterruptedException e) {}
         }
+    }
+    
+        public synchronized boolean serAtacado(int tiempoAtaque) {
+        siendoAtacado = true;
+        try {
+            Thread.sleep(tiempoAtaque);
+        } catch (InterruptedException e) {}
+        // probabilidad 2/3 de sobrevivir
+        int resiste = r.nextInt(3);
+        if (resiste == 0) {
+            capturado = true;
+        }
+        siendoAtacado = false;
+        return resiste != 0;
     }
 
     public String getIdNino() { return idNino; }
