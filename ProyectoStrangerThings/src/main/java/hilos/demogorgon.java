@@ -17,7 +17,7 @@ public class Demogorgon extends Thread {
     private int zonaActual = -1;
 
     public Demogorgon(int idNumerico, Bosque b, Laboratorio l, CentroComercial c, Alcantarillado a, Colmena col, EstadoGlobal e) {
-        this.idDemogorgon = String.format("D%04d", idNumerico); // [cite: 42]
+        this.idDemogorgon = String.format("D%04d", idNumerico);
         this.bosque = b;
         this.laboratorio = l;
         this.centroComercial = c;
@@ -52,19 +52,18 @@ public class Demogorgon extends Thread {
                     // EVENTO: Tormenta (Ataques más rápidos) [cite: 90]
                     if (estadoGlobal.getEventoActivo() == EstadoGlobal.TORMENTA_UPSIDEDOWN) tiempoAtaque /= 2;
 
-                    Thread.sleep(tiempoAtaque);
-                    
-                    // 1/3 de ser capturado, 2/3 de resistir 
-                    boolean exitoCaptura = (r.nextInt(3) == 0); 
-                    resolverAtaqueEnZona(zonaActual, presa, exitoCaptura);
+                    boolean resiste = presa.serAtacado(tiempoAtaque);
+                    boolean capturado = !resiste;
 
-                    if (exitoCaptura) {
+                    resolverAtaqueEnZona(zonaActual, presa, capturado);
+
+                    if (capturado) {
                         Thread.sleep(500 + r.nextInt(501)); // Depósito 0.5 - 1s [cite: 45]
-                        // colmena.depositarNino(presa); 
+                        colmena.depositarNino(presa); 
                         capturas++;
                     }
                 } else {
-                    int tiempoEspera = 4000 + r.nextInt(1001); // 4-5s [cite: 48]
+                    int tiempoEspera = 4000 + r.nextInt(1001);
                     Thread.sleep(tiempoEspera);
                 }
             } catch (InterruptedException e) { break; }

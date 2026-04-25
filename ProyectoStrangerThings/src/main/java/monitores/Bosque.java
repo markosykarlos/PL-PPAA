@@ -10,7 +10,7 @@ public class Bosque {
     private Random r = new Random();
 
     /**
-     * Entrada de Niños: Se añade a la lista de la zona[cite: 43].
+     * Entrada de Niños: Se añade a la lista de la zona.
      */
     public synchronized void acceder(Nino n) {
         ninosPresentes.add(n);
@@ -19,7 +19,7 @@ public class Bosque {
 
     /**
      * Salida de Niños: Bloquea al niño si está bajo ataque hasta que el Demogorgon termine.
-     * Devuelve TRUE si logra salir vivo, o FALSE si fue capturado[cite: 68].
+     * Devuelve TRUE si logra salir vivo, o FALSE si fue capturado.
      */
     public synchronized boolean salir(Nino n) {
         // Mientras el niño esté siendo atacado, debe esperar 
@@ -35,10 +35,10 @@ public class Bosque {
         ninosPresentes.remove(n);
 
         if (n.isCapturado()) {
-            return false; // Fue llevado a la colmena [cite: 68]
+            return false; // Fue llevado a la colmena
         } else {
             System.out.println("El niño " + n.getIdNino() + " sale del BOSQUE con su sangre.");
-            return true; // Logra salir [cite: 64]
+            return true; // Logra salir
         }
     }
 
@@ -58,7 +58,7 @@ public class Bosque {
     }
 
     /**
-     * Resolución del ataque: El Demogorgon avisa el resultado y despierta al niño[cite: 69].
+     * Resolución del ataque: El Demogorgon avisa el resultado y despierta al niño.
      */
     public synchronized void resolverAtaque(Nino n, boolean capturado) {
         n.setCapturado(capturado);

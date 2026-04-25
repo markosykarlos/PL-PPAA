@@ -33,49 +33,62 @@ public class Nino extends Thread {
         this.portalAlc = pportalAlc;
     }
     public void run(){
-        while(true){
+        while(!capturado){
             System.out.println("El nino " + idNino + " ha llegado al sotano");
             try{
                 Thread.sleep(1000 + r.nextInt(1001));
-            int portal = r.nextInt(4);
-            switch(portal){
-                case 0:
-                    portalBosque.cruzarHaciaUpside(this);
-                    bosque.acceder(this);
-                    Thread.sleep(3000 + r.nextInt(2001));
-                    System.out.println("El nino " + idNino + " ha recogido 1 unidad de sangre de Vecna");
-                    bosque.salir(this);
-                    portalBosque.cruzarHaciaHawkins(this);
-                    break;
-                case 1:
-                    portalLab.cruzarHaciaUpside(this);
-                    laboratorio.acceder(this);
-                    Thread.sleep(3000 + r.nextInt(2001));
-                    System.out.println("El nino " + idNino + " ha recogido 1 unidad de sangre de Vecna");
-                    laboratorio.salir(this);
-                    portalLab.cruzarHaciaHawkins(this);
-                    break;
-                case 2:
-                    portalCC.cruzarHaciaUpside(this);
-                    centrocomercial.acceder(this);
-                    Thread.sleep(3000 + r.nextInt(2001));
-                    System.out.println("El nino " + idNino + " ha recogido 1 unidad de sangre de Vecna");
-                    centrocomercial.salir(this);
-                    portalCC.cruzarHaciaHawkins(this);
-                    break;
-                case 3:
-                    portalAlc.cruzarHaciaUpside(this);
-                    alcantarillado.acceder(this);
-                    Thread.sleep(3000 + r.nextInt(2001));
-                    System.out.println("El nino " + idNino + " ha recogido 1 unidad de sangre de Vecna");
-                    alcantarillado.salir(this);
-                    portalAlc.cruzarHaciaHawkins(this);
-                    break;
-            }
-            System.out.println("El nino " + idNino + " ha llegado a la RADIO WSQK");
-            Thread.sleep(2000 + r.nextInt(2001));
-            System.out.println("El nino " + idNino + " esta deambulando por la calle principal");
-            Thread.sleep(3000 + r.nextInt(2001));
+                int portal = r.nextInt(4);
+                boolean sigueVivo = true;
+                switch(portal){
+                    case 0:
+                        portalBosque.cruzarHaciaUpside(this);
+                        bosque.acceder(this);
+                        Thread.sleep(3000 + r.nextInt(2001));
+                        sigueVivo = bosque.salir(this);
+                        if (sigueVivo) {
+                            System.out.println("El nino " + idNino + " ha recogido 1 unidad de sangre de Vecna");
+                            portalBosque.cruzarHaciaHawkins(this);
+                        }
+                        else {return;}
+                        break;
+                    case 1:
+                        portalLab.cruzarHaciaUpside(this);
+                        laboratorio.acceder(this);
+                        Thread.sleep(3000 + r.nextInt(2001));
+                        sigueVivo = laboratorio.salir(this);
+                        if (sigueVivo) {
+                            System.out.println("El nino " + idNino + " ha recogido 1 unidad de sangre de Vecna");
+                            portalLab.cruzarHaciaHawkins(this);
+                        }
+                        else {return;}
+                        break;
+                    case 2:
+                        portalCC.cruzarHaciaUpside(this);
+                        centrocomercial.acceder(this);
+                        Thread.sleep(3000 + r.nextInt(2001));
+                        sigueVivo = centrocomercial.salir(this);
+                        if (sigueVivo) {
+                            System.out.println("El nino " + idNino + " ha recogido 1 unidad de sangre de Vecna");
+                            portalCC.cruzarHaciaHawkins(this);
+                        }
+                        else {return;}
+                        break;
+                    case 3:
+                        portalAlc.cruzarHaciaUpside(this);
+                        alcantarillado.acceder(this);
+                        Thread.sleep(3000 + r.nextInt(2001));
+                        sigueVivo = alcantarillado.salir(this);
+                        if (sigueVivo) {
+                            System.out.println("El nino " + idNino + " ha recogido 1 unidad de sangre de Vecna");
+                            portalAlc.cruzarHaciaHawkins(this);
+                        }
+                        else {return;}
+                        break;
+                }
+                System.out.println("El nino " + idNino + " ha llegado a la RADIO WSQK");
+                Thread.sleep(2000 + r.nextInt(2001));
+                System.out.println("El nino " + idNino + " esta deambulando por la calle principal");
+                Thread.sleep(3000 + r.nextInt(2001));
             }
             catch(InterruptedException e) {}
         }
@@ -91,7 +104,7 @@ public class Nino extends Thread {
         if (resiste == 0) {
             capturado = true;
         }
-        siendoAtacado = false;
+        //siendoAtacado = false;
         return resiste != 0;
     }
 
