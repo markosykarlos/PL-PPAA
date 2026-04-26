@@ -34,9 +34,9 @@ public class Nino extends Thread {
     }
     public void run(){
         while(!capturado){
-            System.out.println("El nino " + idNino + " ha llegado al sotano");
+            //System.out.println("El nino " + idNino + " ha llegado al sotano");
             try{
-                Thread.sleep(1000 + r.nextInt(1001));
+                sotano.acceder(this);
                 int portal = r.nextInt(4);
                 boolean sigueVivo = true;
                 switch(portal){

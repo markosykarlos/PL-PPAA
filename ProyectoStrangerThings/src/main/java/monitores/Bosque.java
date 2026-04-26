@@ -25,7 +25,7 @@ public class Bosque {
         // Mientras el niño esté siendo atacado, debe esperar 
         while (n.isSiendoAtacado()) {
             try {
-                System.out.println("El niño " + n.getIdNino() + " intenta huir del BOSQUE pero está bajo ataque...");
+                System.out.println("El niño " + n.getIdNino() + " intenta huir del bosque pero está bajo ataque");
                 wait(); 
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -37,13 +37,13 @@ public class Bosque {
         if (n.isCapturado()) {
             return false; // Fue llevado a la colmena
         } else {
-            System.out.println("El niño " + n.getIdNino() + " sale del BOSQUE con su sangre.");
+            System.out.println("El niño " + n.getIdNino() + " sale del bosque con su sangre.");
             return true; // Logra salir
         }
     }
 
     /**
-     * Entrada de Demogorgons: Busca una presa aleatoria[cite: 43, 44].
+     * Entrada de Demogorgons: Busca una presa aleatoria
      */
     public synchronized Nino buscarPresa() {
         if (ninosPresentes.isEmpty()) return null;

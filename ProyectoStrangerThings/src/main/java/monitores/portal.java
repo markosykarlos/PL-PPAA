@@ -39,24 +39,24 @@ public class Portal {
             Thread.sleep(1000);
             ocupado = false;
             notifyAll();
-    } catch (InterruptedException e) {}
-}
+        } 
+        catch (InterruptedException e) {}
+    }
     
     public synchronized void cruzarHaciaHawkins(Nino n) {
-    try {
-        esperandoVuelta++;
-        System.out.println(n.getIdNino() + " quiere volver a Hawkins");
-        while (ocupado) {
-            wait();
+        try {
+            esperandoVuelta++;
+            System.out.println(n.getIdNino() + " quiere volver a Hawkins");
+            while (ocupado) {
+                wait();
+            }
+            ocupado = true;
+            esperandoVuelta--;
+            System.out.println(n.getIdNino() + " cruzando de vuelta...");
+            Thread.sleep(1000);
+            ocupado = false;
+            notifyAll();
         }
-        ocupado = true;
-        esperandoVuelta--;
-        System.out.println(n.getIdNino() + " cruzando de vuelta...");
-        Thread.sleep(1000);
-        ocupado = false;
-        notifyAll();
-    } catch (InterruptedException e) {
-        e.printStackTrace();
+        catch (InterruptedException e) {}
     }
-}
 }
