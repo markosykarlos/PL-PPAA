@@ -1,62 +1,52 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package monitores;
 
 import hilos.*;
 
 public class Portal {
-
     private int capacidad;
     private int esperandoIda = 0;
     private int esperandoVuelta = 0;
-    private int cruzando = 0;
     private boolean ocupado = false;
+    private EstadoGlobal estadoGlobal;
+    private java.util.ArrayList<String> enTransito = new java.util.ArrayList<>();
 
-    public Portal(int capacidad) {
+    public Portal(int capacidad, EstadoGlobal estadoGlobal) {
         this.capacidad = capacidad;
+        this.estadoGlobal = estadoGlobal;
     }
 
     public synchronized void cruzarHaciaUpside(Nino n) {
         try {
             esperandoIda++;
-            System.out.println(n.getIdNino() + " esperando en portal (" + esperandoIda + "/" + capacidad + ")");
-            while (esperandoIda < capacidad || esperandoVuelta > 0) {
-                wait();
-            }
-            if (esperandoIda == capacidad) {
-                cruzando = capacidad;
-                esperandoIda = 0;
-                notifyAll();
-            }
-            while (cruzando == 0 || ocupado) {
+            enTransito.add(n.getIdNino() + "(->)");
+            while (estadoGlobal.getEventoActivo() == EstadoGlobal.APAGON_LABORATORIO || esperandoVuelta > 0 || ocupado || esperandoIda < capacidad) {
+                if (esperandoIda >= capacidad && esperandoVuelta == 0 && !ocupado && estadoGlobal.getEventoActivo() != EstadoGlobal.APAGON_LABORATORIO) break;
                 wait();
             }
             ocupado = true;
-            cruzando--;
-            System.out.println(n.getIdNino() + " cruzando portal...");
+            esperandoIda--;
             Thread.sleep(1000);
             ocupado = false;
+            enTransito.remove(n.getIdNino() + "(->)");
             notifyAll();
-        } 
-        catch (InterruptedException e) {}
+        } catch (InterruptedException e) {}
     }
-    
+
     public synchronized void cruzarHaciaHawkins(Nino n) {
         try {
             esperandoVuelta++;
-            System.out.println(n.getIdNino() + " quiere volver a Hawkins");
-            while (ocupado) {
-                wait();
-            }
+            enTransito.add(n.getIdNino() + "(<-)");
+            while (estadoGlobal.getEventoActivo() == EstadoGlobal.APAGON_LABORATORIO || ocupado) wait();
             ocupado = true;
             esperandoVuelta--;
-            System.out.println(n.getIdNino() + " cruzando de vuelta...");
             Thread.sleep(1000);
             ocupado = false;
+            enTransito.remove(n.getIdNino() + "(<-)");
             notifyAll();
-        }
-        catch (InterruptedException e) {}
+        } catch (InterruptedException e) {}
+    }
+
+    public synchronized String getIDs() {
+        return String.join(", ", enTransito);
     }
 }

@@ -1,36 +1,36 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package monitores;
 
-import hilos.*;
+import hilos.Nino;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author LUGIA
- */
 public class Colmena {
     private List<Nino> ninosCapturados = new ArrayList<>();
 
-    // Depositar un niño capturado
     public synchronized void depositarNino(Nino n) {
         ninosCapturados.add(n);
-        System.out.println("El nino " + n.getIdNino() + " ha sido llevado a la colmena.");
-        System.out.println("Total de ninos en la colmena: " + ninosCapturados.size());
+        System.out.println("El niño " + n.getIdNino() + " ha sido llevado a la colmena. Total: " + ninosCapturados.size());
     }
 
-    // Obtener número de niños capturados
     public synchronized int getTotalNinos() {
         return ninosCapturados.size();
     }
-    // Mostrar todos
-    public synchronized void mostrarNinos() {
-        System.out.println("Ninos en la colmena:");
-        for (Nino n : ninosCapturados) {
-            System.out.println(n.getIdNino());
+    
+    // NUEVO: Método para el evento de Eleven
+    public synchronized List<Nino> liberarNinos(int cantidadMaxima) {
+        List<Nino> liberados = new ArrayList<>();
+        int aLiberar = Math.min(cantidadMaxima, ninosCapturados.size());
+        
+        for (int i = 0; i < aLiberar; i++) {
+            Nino n = ninosCapturados.remove(0);
+            liberados.add(n);
         }
+        return liberados;
+    }
+    public synchronized String getIDs() {
+        if (ninosCapturados.isEmpty()) return "";
+        StringBuilder sb = new StringBuilder();
+        for (Nino n : ninosCapturados) sb.append(n.getIdNino()).append(", ");
+        return sb.substring(0, sb.length() - 2);
     }
 }

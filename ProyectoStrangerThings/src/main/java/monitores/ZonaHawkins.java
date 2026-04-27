@@ -2,10 +2,10 @@ package monitores;
 
 import java.util.ArrayList;
 
-public class Sotano {
+public class ZonaHawkins {
     private ArrayList<String> ninos = new ArrayList<>();
 
-    public synchronized void acceder(String idNino) { ninos.add(idNino); }
+    public synchronized void entrar(String idNino) { ninos.add(idNino); }
     public synchronized void salir(String idNino) { ninos.remove(idNino); }
     
     public synchronized String getIDs() {
