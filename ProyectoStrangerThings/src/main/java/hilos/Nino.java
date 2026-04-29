@@ -50,6 +50,7 @@ public class Nino extends Thread {
             try {
                 // 1. Sótano Byers
                 sotano.acceder(idNino);
+                System.out.println("El nino " + idNino + " esta en el sotano");
                 Thread.sleep(1000 + r.nextInt(1001));
                 sotano.salir(idNino);
 
@@ -61,22 +62,26 @@ public class Nino extends Thread {
                     case 0:
                         portalBosque.cruzarHaciaUpside(this);
                         bosque.acceder(this); recolectarSangre(); sigueVivo = bosque.salir(this);
-                        if (sigueVivo) portalBosque.cruzarHaciaHawkins(this); 
+                        if (sigueVivo){
+                            portalBosque.cruzarHaciaHawkins(this);}
                         break;
                     case 1:
                         portalLab.cruzarHaciaUpside(this);
                         laboratorio.acceder(this); recolectarSangre(); sigueVivo = laboratorio.salir(this);
-                        if (sigueVivo) portalLab.cruzarHaciaHawkins(this); 
+                        if (sigueVivo){
+                            portalLab.cruzarHaciaHawkins(this);}
                         break;
                     case 2:
                         portalCC.cruzarHaciaUpside(this);
                         centrocomercial.acceder(this); recolectarSangre(); sigueVivo = centrocomercial.salir(this);
-                        if (sigueVivo) portalCC.cruzarHaciaHawkins(this); 
+                        if (sigueVivo){
+                            portalCC.cruzarHaciaHawkins(this);}
                         break;
                     case 3:
                         portalAlc.cruzarHaciaUpside(this);
                         alcantarillado.acceder(this); recolectarSangre(); sigueVivo = alcantarillado.salir(this);
-                        if (sigueVivo) portalAlc.cruzarHaciaHawkins(this); 
+                        if (sigueVivo){
+                            portalAlc.cruzarHaciaHawkins(this);}
                         break;
                 }
 
@@ -93,7 +98,7 @@ public class Nino extends Thread {
 
                 // 4. Calle Principal (tanto si vuelve sano como si es rescatado por Eleven)
                 callePrincipal.entrar(idNino);
-                Thread.sleep(3000 + r.nextInt(2001)); // Entre 3 y 5 segundos
+                Thread.sleep(3000 + r.nextInt(2001));
                 callePrincipal.salir(idNino);
 
             } catch (InterruptedException e) {
@@ -103,7 +108,7 @@ public class Nino extends Thread {
     }
 
     private void recolectarSangre() throws InterruptedException {
-        int tiempoRecoleccion = 3000 + r.nextInt(2001); // 3 a 5 segundos
+        int tiempoRecoleccion = 3000 + r.nextInt(2001);
         if (estadoGlobal.getEventoActivo() == EstadoGlobal.TORMENTA_UPSIDEDOWN) {
             tiempoRecoleccion *= 2; // Tormenta duplica el tiempo
         }
@@ -116,7 +121,7 @@ public class Nino extends Thread {
             Thread.sleep(tiempoAtaque);
         } catch (InterruptedException e) {}
         
-        boolean resiste = (r.nextInt(3) != 2); 
+        boolean resiste = (r.nextInt(3) != 0); 
         if (!resiste) {
             capturado = true;
         }

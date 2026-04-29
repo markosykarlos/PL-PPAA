@@ -26,13 +26,13 @@ public class Alcantarillado {
 
     public synchronized void acceder(Nino n) {
         ninosPresentes.add(n);
-        System.out.println("El niño " + n.getIdNino() + " ha entrado al BOSQUE.");
+        System.out.println("El niño " + n.getIdNino() + " ha entrado al alcantarillado.");
     }
 
     public synchronized boolean salir(Nino n) {
         while (n.isSiendoAtacado()) {
             try {
-                System.out.println("El niño " + n.getIdNino() + " intenta huir del BOSQUE pero está bajo ataque...");
+                System.out.println("El niño " + n.getIdNino() + " intenta huir del alcantarillado pero está bajo ataque");
                 wait();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -44,7 +44,7 @@ public class Alcantarillado {
         if (n.isCapturado()) {
             return false; // Fue llevado a la colmena
         } else {
-            System.out.println("El niño " + n.getIdNino() + " sale del BOSQUE con su sangre.");
+            System.out.println("El niño " + n.getIdNino() + " sale del alcantarillado con su sangre.");
             return true; // Logra salir
         }
     }
@@ -68,5 +68,9 @@ public class Alcantarillado {
 
     public synchronized int getNumeroNinos() {
         return ninosPresentes.size();
+    }
+    
+    public int getNumeroDemogorgons() {
+        return demogorgonsPresentes.size();
     }
 }

@@ -168,4 +168,10 @@ public class VentanaServidor extends JFrame {
             case EstadoGlobal.RED_MENTAL: lblEventoGlobal.setText("LA RED MENTAL"); break;
         }
     }
+    
+    public int getTotalNinosEnHawkins() {
+        return callePrincipal.getNumeroNinos() +
+               sotano.getNumeroNinos() +
+               radioWSQK.getNumeroNinos();
+    }
 }

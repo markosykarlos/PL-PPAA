@@ -12,4 +12,8 @@ public class Sotano {
         if (ninos.isEmpty()) return "";
         return String.join(", ", ninos);
     }
+
+    public int getNumeroNinos() {
+        return ninos.size();
+    }
 }

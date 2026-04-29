@@ -69,4 +69,8 @@ public class Laboratorio {
     public synchronized int getNumeroNinos() {
         return ninosPresentes.size();
     }
+    
+    public int getNumeroDemogorgons() {
+        return demogorgonsPresentes.size();
+    }
 }
