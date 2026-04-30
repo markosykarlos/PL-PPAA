@@ -3,6 +3,9 @@ package monitores;
 import hilos.Nino;
 import java.util.ArrayList;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Portal {
     private int capacidad;
     private int esperandoIda = 0;
@@ -11,6 +14,10 @@ public class Portal {
     private boolean ocupado = false;
     private EstadoGlobal estadoGlobal;
     private ArrayList<String> enTransito = new ArrayList<>();
+    private ArrayList<Integer> gruposListos = new ArrayList<>();
+    private int contador = 0;
+    private int grupoactual = 0;
+    int grupoCruzado = 0;
 
     public Portal(int capacidad, EstadoGlobal estadoGlobal) {
         this.capacidad = capacidad;
@@ -18,40 +25,49 @@ public class Portal {
     }
 
     public synchronized void cruzarHaciaUpside(Nino n) {
-        try {
-            esperandoIda++;
-            enTransito.add(n.getIdNino() + "(->)");
+    try {
+        esperandoIda++;
+        contador++;                                   
+        n.setGrupoportal(grupoactual);
 
-          
-            while (esperandoIda < capacidad || esperandoVuelta > 0 || cruzandoIda > 0 || estadoGlobal.getEventoActivo() == EstadoGlobal.APAGON_LABORATORIO) {
-                
-                
-                if (esperandoIda >= capacidad && esperandoVuelta == 0 && cruzandoIda == 0 && estadoGlobal.getEventoActivo() != EstadoGlobal.APAGON_LABORATORIO) {
-                    cruzandoIda = capacidad; 
-                    esperandoIda -= capacidad; 
-                    notifyAll(); 
-                    break;
-                }
-                wait();
-            }
-
-            
-            while (ocupado || estadoGlobal.getEventoActivo() == EstadoGlobal.APAGON_LABORATORIO || esperandoVuelta > 0) {
-                wait();
-            }
-
-            ocupado = true;
-            Thread.sleep(1000); 
-            cruzandoIda--; 
-            ocupado = false;
-            
-            enTransito.remove(n.getIdNino() + "(->)");
-            notifyAll(); 
-
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+        if (contador % capacidad == 0) {
+            gruposListos.add(grupoactual);
+            grupoactual++;
         }
+        
+        enTransito.add(n.getIdNino() + "(->)");
+
+        while (esperandoVuelta > 0 || 
+               gruposListos.isEmpty() || 
+               n.getGrupoportal() != gruposListos.get(0) ||
+               estadoGlobal.getEventoActivo() == EstadoGlobal.APAGON_LABORATORIO) {
+            wait();
+        }
+
+        while (ocupado) {
+            wait();
+        }
+        
+        ocupado = true;
+        System.out.println(n.getIdNino() + " cruzando hacia Upside Down...");
+        Thread.sleep(1000);
+        
+        grupoCruzado++;
+        ocupado = false;
+        enTransito.remove(n.getIdNino() + "(->)");
+        
+        if (grupoCruzado == capacidad) {
+            gruposListos.remove(0);
+            grupoCruzado = 0;
+            System.out.println("Grupo completado y removido de la lista");
+        }
+        
+        notifyAll();
+        
+    } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
     }
+}
 
     public synchronized void cruzarHaciaHawkins(Nino n) {
         try {
@@ -79,5 +95,9 @@ public class Portal {
     public synchronized String getIDs() {
         if (enTransito.isEmpty()) return "";
         return String.join(", ", enTransito);
+    }
+
+    public synchronized int getNumeroNinosEsperando() {
+        return esperandoIda;
     }
 }
