@@ -66,7 +66,7 @@ public class Demogorgon extends Thread {
                         colmena.depositarNino(presa);
                         capturas++;
                         System.out.println(idDemogorgon + " ha capturado al niño " + presa.getIdNino() + " (Capturas: " + capturas + ")");
-                        
+                        estadoGlobal.registrarCaptura(this.idDemogorgon);
                         // Engendrar nuevo Demogorgon cada 8 capturas
                         if (capturas % 8 == 0) {
                             int nuevoId = Mainservidor.contadorDemogorgons++;

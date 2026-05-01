@@ -1,6 +1,10 @@
 package monitores;
 
 import java.util.Random;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class EstadoGlobal {
     public static final int NINGUNO = 0;
@@ -62,5 +66,22 @@ public class EstadoGlobal {
      */
     public synchronized boolean hayEventoActivo() {
         return eventoActivo != NINGUNO;
+    }
+    
+    
+    private Map<String, Integer> capturasDemogorgons = new HashMap<>();
+
+    
+    public synchronized void registrarCaptura(String idDemogorgon) {
+        int actuales = capturasDemogorgons.getOrDefault(idDemogorgon, 0);
+        capturasDemogorgons.put(idDemogorgon, actuales + 1);
+    }
+
+    
+    public synchronized List<String> obtenerTopDemogorgons() {
+        return capturasDemogorgons.entrySet().stream()
+                .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))   
+                .map(entry -> entry.getKey() + " (" + entry.getValue() + " capturas)")
+                .collect(Collectors.toList());
     }
 }

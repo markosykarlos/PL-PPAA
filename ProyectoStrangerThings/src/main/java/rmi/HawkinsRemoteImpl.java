@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package rmi;
 
 import interfaz.VentanaServidor;
@@ -116,11 +113,11 @@ public class HawkinsRemoteImpl extends UnicastRemoteObject implements HawkinsRem
         return alcantarillado.getNumeroDemogorgons();
     }
 
-    // ==================== RANKING (Pendiente de implementar) ====================
-    @Override
+    // ==================== RANKING  ====================
+ @Override
     public List<String> getRankingDemogorgons() throws RemoteException {
-        // TODO: Implementar cuando tengas acceso global a los demogorgons
-        return new ArrayList<>();
+        
+        return estadoGlobal.obtenerTopDemogorgons();
     }
 
     // ==================== EVENTO GLOBAL ====================
