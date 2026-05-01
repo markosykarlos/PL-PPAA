@@ -172,7 +172,7 @@ public class VentanaClienteRMI extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new VentanaClienteRMI());
-    }
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> new VentanaClienteRMI());
+//    }
 }
