@@ -39,7 +39,7 @@ public class Portal {
 
         while (esperandoVuelta > 0 || 
                gruposListos.isEmpty() || 
-               n.getGrupoportal() != gruposListos.get(0) || ocupado ||
+               n.getGrupoportal() != gruposListos.get(0) ||
                estadoGlobal.getEventoActivo() == EstadoGlobal.APAGON_LABORATORIO) {
             wait();
         }
