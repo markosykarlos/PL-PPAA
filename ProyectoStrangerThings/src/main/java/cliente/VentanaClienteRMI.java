@@ -11,8 +11,6 @@ import java.awt.*;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import monitores.*;
 import main.*;
 import rmi.*;
@@ -20,13 +18,14 @@ import rmi.*;
 public class VentanaClienteRMI extends JFrame {
 
     private HawkinsRemote servidor;
+    private javax.swing.Timer timerActualizacion;
 
     // Paneles y componentes
     private JTextArea txtResumenHawkins, txtPortales, txtUpsideDown, txtRanking;
     private JLabel lblEventoGlobal, lblEstadoSistema;
     private JButton btnPausarReanudar;
 
-    private Timer timerActualizacion;
+    
     private boolean estaPausado = false;
 
     public VentanaClienteRMI() {
@@ -101,14 +100,12 @@ public class VentanaClienteRMI extends JFrame {
         }
     }
 
+
+
     private void iniciarActualizacionAutomatica() {
-        timerActualizacion = new Timer(true);
-        timerActualizacion.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                actualizarDatosRemotos();
-            }
-        }, 0, 800); // Actualiza cada 800ms
+        // Ejecuta la actualización directamente en el hilo de la interfaz (EDT)
+        timerActualizacion = new javax.swing.Timer(800, e -> actualizarDatosRemotos());
+        timerActualizacion.start();
     }
 
     private void actualizarDatosRemotos() {

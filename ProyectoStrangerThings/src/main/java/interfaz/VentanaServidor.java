@@ -159,14 +159,9 @@ public class VentanaServidor extends JFrame {
         actualizarEvento();
     }
 
-    private void actualizarEvento() {
-        switch (estadoGlobal.getEventoActivo()) {
-            case EstadoGlobal.NINGUNO: lblEventoGlobal.setText("NINGUNO"); break;
-            case EstadoGlobal.APAGON_LABORATORIO: lblEventoGlobal.setText("APAGÓN DEL LABORATORIO"); break;
-            case EstadoGlobal.TORMENTA_UPSIDEDOWN: lblEventoGlobal.setText("TORMENTA DEL UPSIDE DOWN"); break;
-            case EstadoGlobal.INTERVENCION_ELEVEN: lblEventoGlobal.setText("INTERVENCIÓN DE ELEVEN"); break;
-            case EstadoGlobal.RED_MENTAL: lblEventoGlobal.setText("LA RED MENTAL"); break;
-        }
+private void actualizarEvento() {
+        // En lugar de un switch básico, aprovechamos el método que ya cuenta los segundos
+        lblEventoGlobal.setText(estadoGlobal.getDescripcionEventoConTiempo());
     }
     
     public int getTotalNinosEnHawkins() {

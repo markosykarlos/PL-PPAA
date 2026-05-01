@@ -34,6 +34,7 @@ public class Demogorgon extends Thread {
     public void run() {
         while (true) {
             try {
+                estadoGlobal.chequearPausa();
                 if (estadoGlobal.getEventoActivo() == EstadoGlobal.INTERVENCION_ELEVEN) {
                     Thread.sleep(500);
                     continue;

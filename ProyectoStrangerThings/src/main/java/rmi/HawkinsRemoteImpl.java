@@ -127,16 +127,17 @@ public class HawkinsRemoteImpl extends UnicastRemoteObject implements HawkinsRem
     }
 
     // ==================== CONTROL DE EJECUCIÓN ====================
-    @Override
+@Override
     public void pausarEjecucion() throws RemoteException {
         ejecutando = false;
+        estadoGlobal.pausar(); // <--- AÑADIR ESTO
         System.out.println("[RMI] Sistema PAUSADO remotamente");
-        // Más adelante puedes mejorar esto para pausar realmente los hilos
     }
 
     @Override
     public void reanudarEjecucion() throws RemoteException {
         ejecutando = true;
+        estadoGlobal.reanudar(); // <--- AÑADIR ESTO
         System.out.println("[RMI] Sistema REANUDADO remotamente");
     }
 

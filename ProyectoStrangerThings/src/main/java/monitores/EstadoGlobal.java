@@ -16,14 +16,14 @@ public class EstadoGlobal {
     private int eventoActivo = NINGUNO;
     private long tiempoFinEvento = 0;
     private Random r = new Random();
+    private boolean enPausa = false;
 
-    public synchronized void setEventoActivo(int nuevoEvento) {
+ public synchronized void setEventoActivo(int nuevoEvento, int duracionMs) {
         this.eventoActivo = nuevoEvento;
         
         if (nuevoEvento != NINGUNO) {
-            // Duración aleatoria entre 5 y 10 segundos (5000 - 10000 ms)
-            int duracion = 5000 + r.nextInt(5001);
-            this.tiempoFinEvento = System.currentTimeMillis() + duracion;
+            // Ya no usamos el Random aquí, usamos la duración que nos mandan
+            this.tiempoFinEvento = System.currentTimeMillis() + duracionMs;
         } else {
             this.tiempoFinEvento = 0;
         }
@@ -83,5 +83,24 @@ public class EstadoGlobal {
                 .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))   
                 .map(entry -> entry.getKey() + " (" + entry.getValue() + " capturas)")
                 .collect(Collectors.toList());
+    }
+    
+    public synchronized void pausar() {
+        enPausa = true;
+    }
+
+    public synchronized void reanudar() {
+        enPausa = false;
+        notifyAll();
+    }
+
+    public synchronized void chequearPausa() {
+        while (enPausa) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 }

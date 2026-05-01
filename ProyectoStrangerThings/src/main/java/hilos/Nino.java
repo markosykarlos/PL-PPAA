@@ -49,6 +49,7 @@ public class Nino extends Thread {
     public void run() {
         while (true) {
             try {
+                estadoGlobal.chequearPausa();
                 // 1. Sótano Byers
                 sotano.acceder(idNino);
                 System.out.println("El nino " + idNino + " esta en el sotano");
