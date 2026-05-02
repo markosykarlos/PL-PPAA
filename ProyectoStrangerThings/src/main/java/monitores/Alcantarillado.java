@@ -52,7 +52,6 @@ public class Alcantarillado {
     public synchronized Nino buscarPresa() {
         if (ninosPresentes.isEmpty()) return null;
         Nino presa = ninosPresentes.get(r.nextInt(ninosPresentes.size()));
-        
         if (!presa.isSiendoAtacado() && !presa.isCapturado()) {
             presa.setSiendoAtacado(true);
             return presa;

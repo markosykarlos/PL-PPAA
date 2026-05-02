@@ -32,7 +32,7 @@ public class Bosque {
     public synchronized boolean salir(Nino n) {
         while (n.isSiendoAtacado()) {
             try {
-                System.out.println("El niño " + n.getIdNino() + " intenta huir del bosque pero está bajo ataque...");
+                System.out.println("El niño " + n.getIdNino() + " intenta huir del bosque pero está bajo ataque");
                 wait();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -52,7 +52,6 @@ public class Bosque {
     public synchronized Nino buscarPresa() {
         if (ninosPresentes.isEmpty()) return null;
         Nino presa = ninosPresentes.get(r.nextInt(ninosPresentes.size()));
-        
         if (!presa.isSiendoAtacado() && !presa.isCapturado()) {
             presa.setSiendoAtacado(true);
             return presa;

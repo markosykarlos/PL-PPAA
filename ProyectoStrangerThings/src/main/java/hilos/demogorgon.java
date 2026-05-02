@@ -73,7 +73,7 @@ public class Demogorgon extends Thread {
                             int nuevoId = Mainservidor.contadorDemogorgons++;
                             Demogorgon nuevoDemo = new Demogorgon(nuevoId, sotano, bosque, laboratorio, centroComercial, alcantarillado, colmena, estadoGlobal, sangre);
                             nuevoDemo.start();
-                            System.out.println("!!! Vecna ha engendrado un nuevo Demogorgon: " + nuevoDemo.idDemogorgon + " !!!");
+                            System.out.println("Vecna ha engendrado un nuevo Demogorgon: " + nuevoDemo.idDemogorgon);
                         }
                     }
                 } else {
