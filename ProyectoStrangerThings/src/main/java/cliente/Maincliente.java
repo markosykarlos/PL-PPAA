@@ -8,11 +8,9 @@ import javax.swing.*;
 import monitores.*;
 import main.*;
 import rmi.*;
-
 public class Maincliente {
 
     public static void main(String[] args) {
-        // Ejecutamos la ventana del cliente en el hilo de Swing
         SwingUtilities.invokeLater(() -> {
             try {
                 new VentanaClienteRMI();
