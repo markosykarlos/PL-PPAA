@@ -145,4 +145,20 @@ public class HawkinsRemoteImpl extends UnicastRemoteObject implements HawkinsRem
     public boolean isEjecutando() throws RemoteException {
         return ejecutando;
     }
+    @Override
+    public String getIDsDemogorgonsEnBosque() throws RemoteException {
+    return bosque.getIDsDemogorgons(); 
+}
+      @Override
+    public String getIDsDemogorgonsEnLaboratorio() throws RemoteException {
+    return laboratorio.getIDsDemogorgons(); 
+}
+      @Override
+    public String getIDsDemogorgonsEnCentroComercial() throws RemoteException {
+    return centroComercial.getIDsDemogorgons(); 
+}
+      @Override
+    public String getIDsDemogorgonsEnAlcantarillado() throws RemoteException {
+    return alcantarillado.getIDsDemogorgons(); 
+}
 }

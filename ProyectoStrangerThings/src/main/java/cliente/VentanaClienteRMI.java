@@ -105,46 +105,64 @@ public class VentanaClienteRMI extends JFrame {
         timerActualizacion.start();
     }
 
-    private void actualizarDatosRemotos() {
+  private void actualizarDatosRemotos() {
         if (servidor == null) return;
         try {
-            // Resumen Hawkins
-            txtResumenHawkins.setText("Total niños en Hawkins: " + servidor.getTotalNinosEnHawkins());
+            // 1. Resumen Hawkins
+            txtResumenHawkins.setText("Total niños en Hawkins: " + servidor.getTotalNinosEnHawkins()); 
 
-            // Portales
-            txtPortales.setText(servidor.getEstadoPortales());
+            // 2. Portales
+            txtPortales.setText(servidor.getEstadoPortales()); 
 
-            // Upside Down
-            StringBuilder sb = new StringBuilder("=== UPSIDE DOWN ===\n\n");
-            sb.append("Bosque: ").append(servidor.getNinosEnBosque()).append(" niños\n");
-            sb.append("Laboratorio: ").append(servidor.getNinosEnLaboratorio()).append(" niños\n");
-            sb.append("Centro Comercial: ").append(servidor.getNinosEnCentroComercial()).append(" niños\n");
-            sb.append("Alcantarillado: ").append(servidor.getNinosEnAlcantarillado()).append(" niños\n\n");
-            sb.append("Colmena (Capturados): ").append(servidor.getNinosEnColmena()).append(" niños");
-            txtUpsideDown.setText(sb.toString());
+            // 3. Upside Down (Niños y Demogorgons)
+            StringBuilder sb = new StringBuilder("=== UPSIDE DOWN ===\n\n"); 
+            
+            // Sección Niños
+            sb.append("--- NIÑOS ---\n");
+            sb.append("Bosque: ").append(servidor.getNinosEnBosque()).append(" niños\n"); 
+            sb.append("Laboratorio: ").append(servidor.getNinosEnLaboratorio()).append(" niños\n"); 
+            sb.append("Centro Comercial: ").append(servidor.getNinosEnCentroComercial()).append(" niños\n"); 
+            sb.append("Alcantarillado: ").append(servidor.getNinosEnAlcantarillado()).append(" niños\n\n"); 
+            
+            // Sección Demogorgons (LO NUEVO)
+            sb.append("--- DEMOGORGONS ---\n");
+            sb.append("Bosque: [").append(servidor.getDemogorgonsEnBosque()).append("] IDs: ")
+              .append(servidor.getIDsDemogorgonsEnBosque()).append("\n");
+            sb.append("Lab: [").append(servidor.getDemogorgonsEnLaboratorio()).append("] IDs: ")
+              .append(servidor.getIDsDemogorgonsEnLaboratorio()).append("\n");
+            sb.append("CC: [").append(servidor.getDemogorgonsEnCentroComercial()).append("] IDs: ")
+              .append(servidor.getIDsDemogorgonsEnCentroComercial()).append("\n");
+            sb.append("Alcantarilla: [").append(servidor.getDemogorgonsEnAlcantarillado()).append("] IDs: ")
+              .append(servidor.getIDsDemogorgonsEnAlcantarillado()).append("\n\n");
 
-            // Ranking
-            List<String> ranking = servidor.getRankingDemogorgons();
+            // Colmena
+            sb.append("Colmena (Capturados): ").append(servidor.getNinosEnColmena()).append(" niños"); 
+            
+            // Ahora sí, actualizamos el JTextArea con todo el contenido acumulado
+            txtUpsideDown.setText(sb.toString()); 
+
+            // 4. Ranking
+            List<String> ranking = servidor.getRankingDemogorgons(); 
             StringBuilder rank = new StringBuilder("TOP 3 DEMOGORGONS\n\n");
             for (String r : ranking) {
-                rank.append(r).append("\n");
+                rank.append(r).append("\n"); 
             }
-            txtRanking.setText(rank.toString());
+            txtRanking.setText(rank.toString()); 
 
-            // Evento Global
-            lblEventoGlobal.setText("Evento: " + servidor.getEstadoEventoGlobal());
+            // 5. Evento Global
+            lblEventoGlobal.setText("Evento: " + servidor.getEstadoEventoGlobal()); 
 
-            // Estado del sistema
-            boolean ejecutando = servidor.isEjecutando();
-            lblEstadoSistema.setText(ejecutando ? "Sistema EJECUTANDO" : "Sistema PAUSADO");
+            // 6. Estado del sistema (Pausa/Ejecución)
+            boolean ejecutando = servidor.isEjecutando(); 
+            lblEstadoSistema.setText(ejecutando ? "Sistema EJECUTANDO" : "Sistema PAUSADO"); 
             lblEstadoSistema.setForeground(ejecutando ? Color.GREEN : Color.RED);
 
         } catch (RemoteException e) {
-            System.err.println("Error al actualizar datos remotos: " + e.getMessage());
+            System.err.println("Error al actualizar datos remotos: " + e.getMessage()); 
         }
     }
-
-    private void togglePausaSistema() {
+  
+  private void togglePausaSistema() {
         if (servidor == null) return;
         try {
             if (estaPausado) {
@@ -159,7 +177,6 @@ public class VentanaClienteRMI extends JFrame {
             JOptionPane.showMessageDialog(this, "Error al cambiar estado: " + e.getMessage());
         }
     }
-
 //    public static void main(String[] args) {
 //        SwingUtilities.invokeLater(VentanaClienteRMI::new);
 //    }

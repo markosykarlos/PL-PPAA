@@ -38,4 +38,8 @@ public interface HawkinsRemote extends Remote {
     void pausarEjecucion() throws RemoteException;
     void reanudarEjecucion() throws RemoteException;
     boolean isEjecutando() throws RemoteException;
+    String getIDsDemogorgonsEnBosque() throws RemoteException;
+    String getIDsDemogorgonsEnLaboratorio() throws RemoteException;
+    String getIDsDemogorgonsEnCentroComercial() throws RemoteException;
+    String getIDsDemogorgonsEnAlcantarillado() throws RemoteException;
 }
