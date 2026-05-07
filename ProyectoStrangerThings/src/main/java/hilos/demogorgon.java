@@ -37,6 +37,7 @@ public class Demogorgon extends Thread {
                 estadoGlobal.chequearPausa();
                 if (estadoGlobal.getEventoActivo() == EstadoGlobal.INTERVENCION_ELEVEN) {
                     Thread.sleep(500);
+                    estadoGlobal.chequearPausa();
                     continue;
                 }
 
@@ -47,6 +48,7 @@ public class Demogorgon extends Thread {
                 }
 
                 Nino presa = entrarYBuscarPresa(zonaDestino);
+                estadoGlobal.chequearPausa();
                 if (zonaActual != -1) salirDeZona(zonaActual, idDemogorgon);
                 entrarEnZona(zonaDestino, idDemogorgon);
                 zonaActual = zonaDestino;
@@ -58,17 +60,19 @@ public class Demogorgon extends Thread {
                     }
 
                     boolean resiste = presa.serAtacado(tiempoAtaque);
+                    estadoGlobal.chequearPausa();
                     boolean capturado = !resiste;
                     
                     resolverAtaqueEnZona(zonaActual, presa, capturado);
 
                     if (capturado) {
                         Thread.sleep(500 + r.nextInt(501)); 
+                        estadoGlobal.chequearPausa();
                         colmena.depositarNino(presa);
                         capturas++;
                         System.out.println(idDemogorgon + " ha capturado al niño " + presa.getIdNino() + " (Capturas: " + capturas + ")");
                         estadoGlobal.registrarCaptura(this.idDemogorgon);
-                        // Engendrar nuevo Demogorgon cada 8 capturas
+                        // Nuevo Demogorgon cada 8 capturas
                         if (capturas % 8 == 0) {
                             int nuevoId = Mainservidor.contadorDemogorgons++;
                             Demogorgon nuevoDemo = new Demogorgon(nuevoId, sotano, bosque, laboratorio, centroComercial, alcantarillado, colmena, estadoGlobal, sangre);
@@ -79,6 +83,7 @@ public class Demogorgon extends Thread {
                 } else {
                     int tiempoEspera = 4000 + r.nextInt(1001);
                     Thread.sleep(tiempoEspera);
+                    estadoGlobal.chequearPausa();
                 }
             } catch (InterruptedException e) { break; }
         }

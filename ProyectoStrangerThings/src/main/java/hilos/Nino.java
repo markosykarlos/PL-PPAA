@@ -52,9 +52,12 @@ public class Nino extends Thread {
                 estadoGlobal.chequearPausa();
                 // 1. Sótano Byers
                 sotano.acceder(idNino);
+                estadoGlobal.chequearPausa();
                 System.out.println("El nino " + idNino + " esta en el sotano");
                 Thread.sleep(1000 + r.nextInt(1001));
+                estadoGlobal.chequearPausa();
                 sotano.salir(idNino);
+                estadoGlobal.chequearPausa();
 
                 // 2. Elegir portal y zona
                 int portalElegido = r.nextInt(4);
@@ -63,27 +66,46 @@ public class Nino extends Thread {
                 switch (portalElegido) {
                     case 0:
                         portalBosque.cruzarHaciaUpside(this);
-                        bosque.acceder(this); recolectarSangre(); sigueVivo = bosque.salir(this);
+                        estadoGlobal.chequearPausa();
+                        bosque.acceder(this); 
+                        recolectarSangre(); 
+                        estadoGlobal.chequearPausa();
+                        sigueVivo = bosque.salir(this);
                         if (sigueVivo){
-                            portalBosque.cruzarHaciaHawkins(this);}
+                            portalBosque.cruzarHaciaHawkins(this);
+                            estadoGlobal.chequearPausa();}
                         break;
                     case 1:
                         portalLab.cruzarHaciaUpside(this);
-                        laboratorio.acceder(this); recolectarSangre(); sigueVivo = laboratorio.salir(this);
+                        estadoGlobal.chequearPausa();
+                        laboratorio.acceder(this); 
+                        recolectarSangre(); 
+                        estadoGlobal.chequearPausa();
+                        sigueVivo = laboratorio.salir(this);
                         if (sigueVivo){
-                            portalLab.cruzarHaciaHawkins(this);}
+                            portalLab.cruzarHaciaHawkins(this);
+                            estadoGlobal.chequearPausa();}
                         break;
                     case 2:
                         portalCC.cruzarHaciaUpside(this);
-                        centrocomercial.acceder(this); recolectarSangre(); sigueVivo = centrocomercial.salir(this);
+                        estadoGlobal.chequearPausa();
+                        centrocomercial.acceder(this); 
+                        recolectarSangre(); 
+                        sigueVivo = centrocomercial.salir(this);
                         if (sigueVivo){
-                            portalCC.cruzarHaciaHawkins(this);}
+                            portalCC.cruzarHaciaHawkins(this);
+                            estadoGlobal.chequearPausa();}
                         break;
                     case 3:
                         portalAlc.cruzarHaciaUpside(this);
-                        alcantarillado.acceder(this); recolectarSangre(); sigueVivo = alcantarillado.salir(this);
+                        estadoGlobal.chequearPausa();
+                        alcantarillado.acceder(this); 
+                        recolectarSangre(); 
+                        estadoGlobal.chequearPausa();
+                        sigueVivo = alcantarillado.salir(this);
                         if (sigueVivo){
-                            portalAlc.cruzarHaciaHawkins(this);}
+                            portalAlc.cruzarHaciaHawkins(this);
+                            estadoGlobal.chequearPausa();}
                         break;
                 }
 
@@ -95,12 +117,14 @@ public class Nino extends Thread {
                     sangre.anadirSangre();
                     radioWSQK.entrar(idNino);
                     Thread.sleep(2000 + r.nextInt(2001)); // Entre 2 y 4 segundos
+                    estadoGlobal.chequearPausa();
                     radioWSQK.salir(idNino);
                 }
 
                 // 4. Calle Principal (tanto si vuelve sano como si es rescatado por Eleven)
                 callePrincipal.entrar(idNino);
                 Thread.sleep(3000 + r.nextInt(2001));
+                estadoGlobal.chequearPausa();
                 callePrincipal.salir(idNino);
 
             } catch (InterruptedException e) {
@@ -111,6 +135,7 @@ public class Nino extends Thread {
 
     private void recolectarSangre() throws InterruptedException {
         int tiempoRecoleccion = 3000 + r.nextInt(2001);
+        estadoGlobal.chequearPausa();
         if (estadoGlobal.getEventoActivo() == EstadoGlobal.TORMENTA_UPSIDEDOWN) {
             tiempoRecoleccion *= 2; // Tormenta duplica el tiempo
         }
@@ -132,6 +157,7 @@ public class Nino extends Thread {
     
     private synchronized void esperarRescate() throws InterruptedException {
         while (capturado) {
+            estadoGlobal.chequearPausa();
             wait();
         }
     }
