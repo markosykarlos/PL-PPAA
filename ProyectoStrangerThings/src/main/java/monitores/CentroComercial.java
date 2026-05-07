@@ -12,7 +12,6 @@ public class CentroComercial {
     public synchronized void accederDemogorgon(String id) { demogorgonsPresentes.add(id); }
     public synchronized void salirDemogorgon(String id) { demogorgonsPresentes.remove(id); }
 
-    // Reemplaza tu getNumeroNinos() por estos dos métodos:
     public synchronized String getIDsNinos() {
         if (ninosPresentes.isEmpty()) return "";
         StringBuilder sb = new StringBuilder();
@@ -42,10 +41,10 @@ public class CentroComercial {
         ninosPresentes.remove(n);
         
         if (n.isCapturado()) {
-            return false; // Fue llevado a la colmena
+            return false;
         } else {
             System.out.println("El niño " + n.getIdNino() + " sale del centro comercial con su sangre.");
-            return true; // Logra salir
+            return true;
         }
     }
 
@@ -62,7 +61,7 @@ public class CentroComercial {
     public synchronized void resolverAtaque(Nino n, boolean capturado) {
         n.setCapturado(capturado);
         n.setSiendoAtacado(false);
-        notifyAll(); // Despierta al niño bloqueado en salir()
+        notifyAll();
     }
 
     public synchronized int getNumeroNinos() {

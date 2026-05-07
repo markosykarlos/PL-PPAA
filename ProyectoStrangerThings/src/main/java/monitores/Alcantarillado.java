@@ -12,7 +12,6 @@ public class Alcantarillado {
     public synchronized void accederDemogorgon(String id) { demogorgonsPresentes.add(id); }
     public synchronized void salirDemogorgon(String id) { demogorgonsPresentes.remove(id); }
 
-    // Reemplaza tu getNumeroNinos() por estos dos métodos:
     public synchronized String getIDsNinos() {
         if (ninosPresentes.isEmpty()) return "";
         StringBuilder sb = new StringBuilder();

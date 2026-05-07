@@ -18,7 +18,7 @@ public class Log {
         String fechaHora = LocalDateTime.now().format(formatoFecha);
         String lineaLog = "[" + fechaHora + "] " + mensaje;
         
-        // Imprimimos por consola para verlo también en NetBeans
+        // Imprimimos para verlo tambien en netbeans
         System.out.println(lineaLog);
         
         // Guardamos en el archivo (el 'true' es para añadir, no sobreescribir)

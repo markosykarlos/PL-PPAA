@@ -20,14 +20,13 @@ public class EstadoGlobal {
 
  public synchronized void setEventoActivo(int nuevoEvento, int duracionMs) {
         this.eventoActivo = nuevoEvento;
-        
         if (nuevoEvento != NINGUNO) {
             // Ya no usamos el Random aquí, usamos la duración que nos mandan
             this.tiempoFinEvento = System.currentTimeMillis() + duracionMs;
-        } else {
+        }
+        else {
             this.tiempoFinEvento = 0;
         }
-        
         notifyAll();
     }
 
@@ -37,7 +36,7 @@ public class EstadoGlobal {
     
     /**
      * Método clave para la Parte 2 (RMI)
-     * Devuelve una descripción legible del evento + tiempo restante
+     * Devuelve una descripción del evento + tiempo restante
      */
     public synchronized String getDescripcionEventoConTiempo() {
         if (eventoActivo == NINGUNO) {
@@ -51,32 +50,23 @@ public class EstadoGlobal {
             case RED_MENTAL -> "LA RED MENTAL";
             default -> "Evento desconocido";
         };
-
         long tiempoRestante = tiempoFinEvento - System.currentTimeMillis();
-        
         if (tiempoRestante <= 0) {
-            return nombreEvento + " (finalizando...)";
+            return nombreEvento + " (finalizando)";
         }
-
         return nombreEvento + " - " + (tiempoRestante / 1000) + "s restantes";
     }
 
-    /**
-     * Método auxiliar útil para saber si hay un evento activo
-     */
     public synchronized boolean hayEventoActivo() {
         return eventoActivo != NINGUNO;
     }
     
-    
     private Map<String, Integer> capturasDemogorgons = new HashMap<>();
-
     
     public synchronized void registrarCaptura(String idDemogorgon) {
         int actuales = capturasDemogorgons.getOrDefault(idDemogorgon, 0);
         capturasDemogorgons.put(idDemogorgon, actuales + 1);
     }
-
     
     public synchronized List<String> obtenerTopDemogorgons() {
         return capturasDemogorgons.entrySet().stream()
