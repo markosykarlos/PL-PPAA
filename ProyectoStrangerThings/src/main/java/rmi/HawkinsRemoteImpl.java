@@ -46,7 +46,7 @@ public class HawkinsRemoteImpl extends UnicastRemoteObject implements HawkinsRem
         return ventana.getTotalNinosEnHawkins();
     }
 
-    // ==================== PORTALES ====================
+    // PORTALES
     @Override
     public int getNinosEnPortal(int portalId) throws RemoteException {
         switch (portalId) {
@@ -66,7 +66,7 @@ public class HawkinsRemoteImpl extends UnicastRemoteObject implements HawkinsRem
                " | Alcantarillado: " + getNinosEnPortal(3);
     }
 
-    // ==================== NIÑOS EN UPSIDE DOWN ====================
+    // NIÑOS EN UPSIDE DOWN
     @Override
     public int getNinosEnBosque() throws RemoteException {
         return bosque.getNumeroNinos();
@@ -92,7 +92,7 @@ public class HawkinsRemoteImpl extends UnicastRemoteObject implements HawkinsRem
         return colmena.getTotalNinos();
     }
 
-    // ==================== DEMOGORGONS ====================
+    // DEMOGORGONS
     @Override
     public int getDemogorgonsEnBosque() throws RemoteException {
         return bosque.getNumeroDemogorgons();
@@ -113,31 +113,31 @@ public class HawkinsRemoteImpl extends UnicastRemoteObject implements HawkinsRem
         return alcantarillado.getNumeroDemogorgons();
     }
 
-    // ==================== RANKING  ====================
+    // RANKING
  @Override
     public List<String> getRankingDemogorgons() throws RemoteException {
         
         return estadoGlobal.obtenerTopDemogorgons();
     }
 
-    // ==================== EVENTO GLOBAL ====================
+    // EVENTO GLOBAL
     @Override
     public String getEstadoEventoGlobal() throws RemoteException {
         return estadoGlobal.getDescripcionEventoConTiempo();
     }
 
-    // ==================== CONTROL DE EJECUCIÓN ====================
+    // CONTROL DE EJECUCIÓN
 @Override
     public void pausarEjecucion() throws RemoteException {
         ejecutando = false;
-        estadoGlobal.pausar(); // <--- AÑADIR ESTO
+        estadoGlobal.pausar();
         System.out.println("[RMI] Sistema PAUSADO remotamente");
     }
 
     @Override
     public void reanudarEjecucion() throws RemoteException {
         ejecutando = true;
-        estadoGlobal.reanudar(); // <--- AÑADIR ESTO
+        estadoGlobal.reanudar();
         System.out.println("[RMI] Sistema REANUDADO remotamente");
     }
 

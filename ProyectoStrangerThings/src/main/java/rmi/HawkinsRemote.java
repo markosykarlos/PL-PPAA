@@ -1,14 +1,13 @@
 
 package rmi;
 
-// HawkinsRemote.java
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
 public interface HawkinsRemote extends Remote {
 
-    // Información general de Hawkins
+    // Hawkins
     int getTotalNinosEnHawkins() throws RemoteException;
     
     // Portales
@@ -29,10 +28,10 @@ public interface HawkinsRemote extends Remote {
     int getDemogorgonsEnAlcantarillado() throws RemoteException;
 
     // Ranking
-    List<String> getRankingDemogorgons() throws RemoteException;   // Ej: "D0001 (45 capturas)"
+    List<String> getRankingDemogorgons() throws RemoteException;
 
     // Evento Global
-    String getEstadoEventoGlobal() throws RemoteException;   // "INTERVENCIÓN DE ELEVEN - 7s restantes"
+    String getEstadoEventoGlobal() throws RemoteException;
 
     // Control del servidor
     void pausarEjecucion() throws RemoteException;

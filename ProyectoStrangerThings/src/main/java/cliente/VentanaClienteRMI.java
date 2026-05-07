@@ -124,7 +124,7 @@ public class VentanaClienteRMI extends JFrame {
             sb.append("Centro Comercial: ").append(servidor.getNinosEnCentroComercial()).append(" niños\n"); 
             sb.append("Alcantarillado: ").append(servidor.getNinosEnAlcantarillado()).append(" niños\n\n"); 
             
-            // Sección Demogorgons (LO NUEVO)
+            // Sección Demogorgons
             sb.append("--- DEMOGORGONS ---\n");
             sb.append("Bosque: [").append(servidor.getDemogorgonsEnBosque()).append("] IDs: ")
               .append(servidor.getIDsDemogorgonsEnBosque()).append("\n");
@@ -177,7 +177,4 @@ public class VentanaClienteRMI extends JFrame {
             JOptionPane.showMessageDialog(this, "Error al cambiar estado: " + e.getMessage());
         }
     }
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(VentanaClienteRMI::new);
-//    }
 }

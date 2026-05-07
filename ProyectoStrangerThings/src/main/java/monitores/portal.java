@@ -10,7 +10,7 @@ public class Portal {
     private boolean ocupado = false;
     private EstadoGlobal estadoGlobal;
     
-    // Listas para la Interfaz Gráfica
+    // Listas para la interfaz gráfica
     private ArrayList<String> enTransito = new ArrayList<>();
     private ArrayList<String> ninosEsperando = new ArrayList<>(); 
     
@@ -61,7 +61,7 @@ public class Portal {
         }
 
         try {
-            Thread.sleep(1000); // Cruzando
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
