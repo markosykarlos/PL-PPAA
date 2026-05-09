@@ -64,11 +64,37 @@ public class EstadoGlobal {
         capturasDemogorgons.put(idDemogorgon, actuales + 1);
     }
     
-    public synchronized List<String> obtenerTopDemogorgons() {
-        return capturasDemogorgons.entrySet().stream()
-                .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))   
-                .map(entry -> entry.getKey() + " (" + entry.getValue() + " capturas)")
-                .collect(Collectors.toList());
+   public synchronized List<String> obtenerTopDemogorgons() {
+
+        List<Map.Entry<String, Integer>> lista = new java.util.ArrayList<>(capturasDemogorgons.entrySet());
+
+        
+        lista.sort(new java.util.Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> e1, Map.Entry<String, Integer> e2) {
+                
+                return e2.getValue().compareTo(e1.getValue());
+            }
+        });
+
+        
+        List<String> resultado = new java.util.ArrayList<>();
+        
+     
+        for (Map.Entry<String, Integer> entrada : lista) {
+            String id = entrada.getKey();
+            Integer numCapturas = entrada.getValue();
+            
+            
+            resultado.add(id + " (" + numCapturas + " capturas)");
+            
+            // la practica ponia top 3
+            if (resultado.size() == 3) {
+                break;
+            }
+        }
+
+        return resultado;
     }
     
     public synchronized void pausar() {
