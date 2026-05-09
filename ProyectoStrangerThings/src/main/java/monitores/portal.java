@@ -36,6 +36,7 @@ public class Portal {
                 grupoactual++;
                 notifyAll(); 
             }
+            estadoGlobal.chequearPausa();
             while (esperandoVuelta > 0 || 
                    gruposListos.isEmpty() || 
                    n.getGrupoportal() != gruposListos.get(0) ||
@@ -56,6 +57,7 @@ public class Portal {
         }
         try {
             Thread.sleep(1000);
+            estadoGlobal.chequearPausa();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -75,7 +77,7 @@ public class Portal {
         synchronized(this) {
             esperandoVuelta++;
             ninosEsperando.add(n.getIdNino() + "(VUELTA)");
-            
+            estadoGlobal.chequearPausa();
             while (ocupado || estadoGlobal.getEventoActivo() == EstadoGlobal.APAGON_LABORATORIO) {
                 try {
                     wait();
@@ -89,13 +91,12 @@ public class Portal {
             ninosEsperando.remove(n.getIdNino() + "(VUELTA)");
             enTransito.add(n.getIdNino() + "(<-)");
         } 
-
         try {
             Thread.sleep(1000);
+            estadoGlobal.chequearPausa();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-
         synchronized(this) {
             ocupado = false;
             enTransito.remove(n.getIdNino() + "(<-)");

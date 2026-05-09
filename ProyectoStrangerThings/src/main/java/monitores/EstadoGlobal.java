@@ -1,11 +1,9 @@
 package monitores;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class EstadoGlobal {
     public static final int NINGUNO = 0;
@@ -16,7 +14,6 @@ public class EstadoGlobal {
 
     private int eventoActivo = NINGUNO;
     private long tiempoFinEvento = 0;
-    private Random r = new Random();
     private boolean enPausa = false;
 
  public synchronized void setEventoActivo(int nuevoEvento, int duracionMs) {
