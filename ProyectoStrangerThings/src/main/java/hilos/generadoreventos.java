@@ -24,9 +24,9 @@ public class Generadoreventos extends Thread {
             try {
                 estado.chequearPausa(); // Comprobamos si el RMI lo ha pausado
                 
-                // PARA PROBAR: Intervalo súper corto (5 a 10 segundos)
+                // ESTO HAY QUE CAMBIARLO LO PUSE CORTO PARA PROBAR
                 int tiempoEspera = 5000 + random.nextInt(5000);
-                System.out.println("[EVENTOS] Esperando " + (tiempoEspera/1000) + "s para el siguiente ataque...");
+                System.out.println("[EVENTOS] Esperando " + (tiempoEspera/1000) + "s para el siguiente");
                 Thread.sleep(tiempoEspera);
 
                 estado.chequearPausa(); // Volvemos a comprobar por si lo pausaron mientras dormía
@@ -40,13 +40,13 @@ public class Generadoreventos extends Thread {
 
                 String nombreEvento = "";
                 switch (eventoElegido) {
-                    case EstadoGlobal.APAGON_LABORATORIO: nombreEvento = "Apagón del Laboratorio"; break;
+                    case EstadoGlobal.APAGON_LABORATORIO: nombreEvento = "Apagon del Laboratorio"; break;
                     case EstadoGlobal.TORMENTA_UPSIDEDOWN: nombreEvento = "Tormenta del Upside Down"; break;
-                    case EstadoGlobal.INTERVENCION_ELEVEN: nombreEvento = "Intervención de Eleven"; break;
+                    case EstadoGlobal.INTERVENCION_ELEVEN: nombreEvento = "Intervencion de Eleven"; break;
                     case EstadoGlobal.RED_MENTAL: nombreEvento = "La Red Mental"; break;
                 }
 
-                System.out.println("!!! EVENTO INICIADO: " + nombreEvento + " (Durará " + (duracionEvento/1000) +"s) !!!");
+                System.out.println("ATENCION EVENTO INICIADO: " + nombreEvento + " (va a durar " + (duracionEvento/1000) +"s)");
 
                 // Lógica de Eleven
                 if (eventoElegido == EstadoGlobal.INTERVENCION_ELEVEN) {
@@ -54,7 +54,7 @@ public class Generadoreventos extends Thread {
                     sangre.usarSangre(sangreDisponible); 
                     List<Nino> rescatados = colmena.liberarNinos(sangreDisponible);
                     
-                    System.out.println("Eleven ha gastado " + sangreDisponible + " unidades de sangre para rescatar a " + rescatados.size() + " niños.");
+                    System.out.println("Eleven ha gastado " + sangreDisponible + " unidades de sangre para rescatar a " + rescatados.size() + " ninos.");
                     
                     for (Nino n : rescatados) {
                         n.serRescatado();
@@ -64,7 +64,7 @@ public class Generadoreventos extends Thread {
                 // El hilo duerme exactamente lo que dura el evento
                 Thread.sleep(duracionEvento);
 
-                System.out.println("--- Evento " + nombreEvento + " finalizado. Modo seguro. ---");
+                System.out.println("Evento " + nombreEvento + " finalizado");
                 estado.setEventoActivo(EstadoGlobal.NINGUNO, 0); // Apagamos el evento
 
             } catch (InterruptedException e) { 

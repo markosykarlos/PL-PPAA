@@ -47,20 +47,20 @@ public class Mainservidor {
            Creadorninos generadorNinos = new Creadorninos(sotano, bosque, laboratorio, centrocomercial, alcantarillado, portalBosque, portalLab, portalCC, portalAlc, estadoGlobal, sangre, log, callePrincipal, radioWSQK);
             generadorNinos.start();
 
-            // ==================== REGISTRO RMI ====================
+           
                 System.out.println("Iniciando registro RMI");
 
-                // Crear el registro RMI en el puerto 1099 (por defecto)
+                
                 LocateRegistry.createRegistry(1099);
 
-                // Crear la implementación remota
+                
                 HawkinsRemoteImpl remoteImpl = new HawkinsRemoteImpl(
                     ventana, estadoGlobal, colmena, bosque, laboratorio, 
                     centrocomercial, alcantarillado, 
                     portalBosque, portalLab, portalCC, portalAlc
                 );
 
-                // Registrar el objeto remoto con el nombre "HawkinsServer"
+                
                 Naming.rebind("rmi://localhost:1099/HawkinsServer", remoteImpl);
 
                 System.out.println("Servidor RMI iniciado correctamente en rmi://localhost:1099/HawkinsServer");

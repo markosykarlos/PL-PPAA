@@ -70,14 +70,14 @@ public class Demogorgon extends Thread {
                         estadoGlobal.chequearPausa();
                         colmena.depositarNino(presa);
                         capturas++;
-                        System.out.println(idDemogorgon + " ha capturado al niño " + presa.getIdNino() + " (Capturas: " + capturas + ")");
+                        System.out.println(idDemogorgon + " ha capturado al nino " + presa.getIdNino() + " (Capturas: " + capturas + ")");
                         estadoGlobal.registrarCaptura(this.idDemogorgon);
                         // Nuevo Demogorgon cada 8 capturas
                         if (capturas % 8 == 0) {
                             int nuevoId = Mainservidor.contadorDemogorgons++;
                             Demogorgon nuevoDemo = new Demogorgon(nuevoId, sotano, bosque, laboratorio, centroComercial, alcantarillado, colmena, estadoGlobal, sangre);
                             nuevoDemo.start();
-                            System.out.println("Vecna ha engendrado un nuevo Demogorgon: " + nuevoDemo.idDemogorgon);
+                            System.out.println("Vecna ha creaddo un nuevo Demogorgon: " + nuevoDemo.idDemogorgon);
                         }
                     }
                 } else {

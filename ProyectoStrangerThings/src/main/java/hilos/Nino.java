@@ -27,7 +27,7 @@ public class Nino extends Thread {
     private boolean siendoAtacado = false;
     private int grupoportal = -1;
 
-    // Constructor actualizado con TODAS las dependencias
+    
     public Nino(int idNumerico, Sotano psotano, Bosque pbosque, Laboratorio plaboratorio, CentroComercial pcentrocomercial, Alcantarillado palcantarillado, Portal pportalBosque, Portal pportalLab, Portal pportalCC, Portal pportalAlc, EstadoGlobal e, Sangre san, ZonaHawkins calle, ZonaHawkins radio) {
         this.idNino = String.format("N%04d", idNumerico);
         this.sotano = psotano;

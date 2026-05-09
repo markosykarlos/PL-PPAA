@@ -9,7 +9,7 @@ public class Colmena {
 
     public synchronized void depositarNino(Nino n) {
         ninosCapturados.add(n);
-        System.out.println("El niño " + n.getIdNino() + " ha sido llevado a la colmena. Total: " + ninosCapturados.size());
+        System.out.println("El nino " + n.getIdNino() + " ha sido llevado a la colmena. Total: " + ninosCapturados.size());
     }
 
     public synchronized int getTotalNinos() {

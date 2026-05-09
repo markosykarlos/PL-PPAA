@@ -45,6 +45,40 @@ public class VentanaServidor extends JFrame {
         this.portalCC = p3;
         this.portalAlc = p4;
 
+        
+        
+        try {
+            Color fondoTerminal = new Color(15, 20, 15); // Un negro con un toque ínfimo de verde oscuro
+            Color textoFosforo = new Color(50, 255, 50); // Verde brillante retro
+            Font fuenteRetro = new Font("Monospaced", Font.BOLD, 13); // Fuente de máquina de escribir
+
+            // Fondos
+            UIManager.put("Panel.background", fondoTerminal);
+            UIManager.put("TextArea.background", fondoTerminal);
+            UIManager.put("ScrollPane.background", fondoTerminal);
+            UIManager.put("Viewport.background", fondoTerminal);
+
+            // Textos
+            UIManager.put("TextArea.foreground", textoFosforo);
+            UIManager.put("Label.foreground", textoFosforo);
+            
+            // Fuentes
+            UIManager.put("TextArea.font", fuenteRetro);
+            UIManager.put("Label.font", fuenteRetro);
+
+            // Bordes con título (TitledBorder)
+            UIManager.put("TitledBorder.titleColor", textoFosforo);
+            UIManager.put("TitledBorder.font", fuenteRetro);
+
+            // Botones
+            UIManager.put("Button.background", new Color(30, 40, 30));
+            UIManager.put("Button.foreground", textoFosforo);
+            UIManager.put("Button.font", new Font("Monospaced", Font.BOLD, 14));
+            
+        } catch (Exception e) {
+            System.err.println("Error aplicando el tema retro: " + e.getMessage());
+        } 
+        
         setTitle("STRANGER THINGS - Servidor Central");
         setSize(1200, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

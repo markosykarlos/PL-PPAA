@@ -4,6 +4,7 @@ import java.awt.*;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.List;
+import javax.swing.border.TitledBorder;
 import monitores.*;
 import main.*;
 import rmi.*;
@@ -21,6 +22,21 @@ public class VentanaClienteRMI extends JFrame {
     private boolean estaPausado = false;
 
     public VentanaClienteRMI() {
+        
+       try {
+            Color textoFosforo = new Color(50, 255, 50); // Verde brillante retro
+            Font fuenteRetro = new Font("Monospaced", Font.BOLD, 13); // Fuente retro
+
+            UIManager.put("TitledBorder.titleColor", textoFosforo);
+            UIManager.put("TitledBorder.font", fuenteRetro);
+
+            UIManager.put("Button.background", new Color(30, 40, 30));
+            UIManager.put("Button.foreground", textoFosforo);
+            UIManager.put("Button.font", new Font("Monospaced", Font.BOLD, 14));
+        } catch (Exception e) {
+            System.err.println("Error aplicando el tema retro: " + e.getMessage());
+        }        
+        
         setTitle("STRANGER THINGS - Módulo Remoto (Cliente RMI)");
         setSize(1200, 780);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -34,17 +50,18 @@ public class VentanaClienteRMI extends JFrame {
         setVisible(true);
     }
 
-    private void inicializarComponentes() {
+private void inicializarComponentes() {
         // Panel superior
         JPanel panelSuperior = new JPanel(new GridLayout(1, 3, 10, 10));
-       
+        panelSuperior.setOpaque(false); // Hacemos transparente también el panel de arriba
+        
         lblEstadoSistema = new JLabel("Conectado al servidor", SwingConstants.CENTER);
         lblEstadoSistema.setFont(new Font("Arial", Font.BOLD, 16));
         lblEstadoSistema.setForeground(Color.GREEN);
-       
+        
         lblEventoGlobal = new JLabel("Evento: Sin evento activo", SwingConstants.CENTER);
         lblEventoGlobal.setFont(new Font("Arial", Font.BOLD, 14));
-       
+        
         btnPausarReanudar = new JButton("PAUSAR SISTEMA");
         btnPausarReanudar.addActionListener(e -> togglePausaSistema());
         
@@ -52,25 +69,44 @@ public class VentanaClienteRMI extends JFrame {
         panelSuperior.add(lblEventoGlobal);
         panelSuperior.add(btnPausarReanudar);
 
-        // Panel central
-        JPanel panelCentral = new JPanel(new BorderLayout(10, 10));
+        // Panel central con nuestra imagen
+        PanelConFondo panelCentral = new PanelConFondo(); 
+        panelCentral.setLayout(new BorderLayout(10, 10));
+        panelCentral.setOpaque(true);
 
         // Izquierda: Resumen Hawkins
         JPanel leftPanel = new JPanel(new BorderLayout());
+        leftPanel.setOpaque(false); // Transparente!
         txtResumenHawkins = crearTextArea("RESUMEN HAWKINS");
-        leftPanel.add(new JScrollPane(txtResumenHawkins), BorderLayout.CENTER);
+        JScrollPane scrollResumen = new JScrollPane(txtResumenHawkins);
+        scrollResumen.setOpaque(false);
+        scrollResumen.getViewport().setOpaque(false);
+        leftPanel.add(scrollResumen, BorderLayout.CENTER);
 
         // Centro: Portales arriba + Upside Down abajo
         JPanel centerPanel = new JPanel(new GridLayout(2, 1, 0, 10));
+        centerPanel.setOpaque(false); // Transparente!
         txtPortales = crearTextArea("ESTADO DE PORTALES");
         txtUpsideDown = crearTextArea("UPSIDE DOWN");
-        centerPanel.add(new JScrollPane(txtPortales));
-        centerPanel.add(new JScrollPane(txtUpsideDown));
+        
+        JScrollPane scrollPortales = new JScrollPane(txtPortales);
+        scrollPortales.setOpaque(false);
+        scrollPortales.getViewport().setOpaque(false);
+        centerPanel.add(scrollPortales);
+        
+        JScrollPane scrollUD = new JScrollPane(txtUpsideDown);
+        scrollUD.setOpaque(false);
+        scrollUD.getViewport().setOpaque(false);
+        centerPanel.add(scrollUD);
 
         // Derecha: Ranking
         JPanel rightPanel = new JPanel(new BorderLayout());
+        rightPanel.setOpaque(false); // Transparente!
         txtRanking = crearTextArea("RANKING DEMOGORGONS");
-        rightPanel.add(new JScrollPane(txtRanking), BorderLayout.CENTER);
+        JScrollPane scrollRanking = new JScrollPane(txtRanking);
+        scrollRanking.setOpaque(false);
+        scrollRanking.getViewport().setOpaque(false);
+        rightPanel.add(scrollRanking, BorderLayout.CENTER);
 
         panelCentral.add(leftPanel, BorderLayout.WEST);
         panelCentral.add(centerPanel, BorderLayout.CENTER);
@@ -84,7 +120,16 @@ public class VentanaClienteRMI extends JFrame {
         JTextArea area = new JTextArea();
         area.setEditable(false);
         area.setFont(new Font("Monospaced", Font.PLAIN, 13));
-        area.setBorder(BorderFactory.createTitledBorder(titulo));
+        area.setForeground(new Color(50, 255, 50)); // Verde fosforito manual
+
+        // --- IMPORTANTE PARA LA TRANSPARENCIA ---
+        area.setOpaque(false); // Esto hace que el fondo de la JTextArea desaparezca
+
+       
+        TitledBorder borde = BorderFactory.createTitledBorder(titulo);
+        borde.setTitleColor(new Color(50, 255, 50));
+        area.setBorder(borde);
+        
         return area;
     }
 
@@ -175,6 +220,34 @@ public class VentanaClienteRMI extends JFrame {
             estaPausado = !estaPausado;
         } catch (RemoteException e) {
             JOptionPane.showMessageDialog(this, "Error al cambiar estado: " + e.getMessage());
+        }
+    }
+  class PanelConFondo extends JPanel {
+        private Image imagenFondo;
+
+        public PanelConFondo() {
+            try {
+                
+                java.net.URL url = getClass().getResource("/cliente/fondo_retro.png");
+                if (url != null) {
+                    
+                    imagenFondo = new ImageIcon(url).getImage();
+                } else {
+                    System.err.println("No se encontró la imagen de fondo en /cliente/fondo_retro.png");
+                   
+                    setBackground(new Color(15, 20, 15));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g); 
+            if (imagenFondo != null) {
+                g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
+            }
         }
     }
 }

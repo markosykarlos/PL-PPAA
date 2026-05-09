@@ -25,6 +25,7 @@ public class Portal {
     }
 
     public void cruzarHaciaUpside(Nino n) {
+        // ESO ES PARA SOLO PONER UNA PARTE DEL CODIGO EN SYNCHRONIZED
         synchronized(this) {
             esperandoIda++;
             contador++;                                   
@@ -114,12 +115,26 @@ public class Portal {
     }
 
     // Nuevo getIDs() para mostrar quién espera y quién cruza
-    public synchronized String getIDs() {
-        String textoEsperando = ninosEsperando.isEmpty() ? "Nadie" : String.join(", ", ninosEsperando);
-        String textoCruzando = enTransito.isEmpty() ? "Libre" : String.join(", ", enTransito);
-        
-        return "Cola: " + textoEsperando + "\nCruzando: " + textoCruzando;
+public synchronized String getIDs() {
+    String textoEsperando;
+    String textoCruzando;
+
+    // Comprobamos la cola de espera
+    if (ninosEsperando.isEmpty()) {
+        textoEsperando = "Nadie";
+    } else {
+        textoEsperando = String.join(", ", ninosEsperando);
     }
+
+    // Comprobamos los que están cruzando
+    if (enTransito.isEmpty()) {
+        textoCruzando = "Libre";
+    } else {
+        textoCruzando = String.join(", ", enTransito);
+    }
+
+    return "Cola: " + textoEsperando + "\nCruzando: " + textoCruzando;
+}
 
     public synchronized int getNumeroNinosEsperando() {
         return esperandoIda + esperandoVuelta + enTransito.size();

@@ -44,9 +44,9 @@ public class EstadoGlobal {
         }
 
         String nombreEvento = switch (eventoActivo) {
-            case APAGON_LABORATORIO -> "APAGÓN DEL LABORATORIO";
+            case APAGON_LABORATORIO -> "APAGON DEL LABORATORIO";
             case TORMENTA_UPSIDEDOWN -> "TORMENTA DEL UPSIDE DOWN";
-            case INTERVENCION_ELEVEN -> "INTERVENCIÓN DE ELEVEN";
+            case INTERVENCION_ELEVEN -> "INTERVENCION DE ELEVEN";
             case RED_MENTAL -> "LA RED MENTAL";
             default -> "Evento desconocido";
         };
