@@ -1,5 +1,6 @@
 package monitores;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.HashMap;
 import java.util.List;
@@ -65,37 +66,26 @@ public class EstadoGlobal {
     }
     
    public synchronized List<String> obtenerTopDemogorgons() {
-
-        List<Map.Entry<String, Integer>> lista = new java.util.ArrayList<>(capturasDemogorgons.entrySet());
-
-        
-        lista.sort(new java.util.Comparator<Map.Entry<String, Integer>>() {
-            @Override
-            public int compare(Map.Entry<String, Integer> e1, Map.Entry<String, Integer> e2) {
-                
-                return e2.getValue().compareTo(e1.getValue());
-            }
-        });
-
-        
-        List<String> resultado = new java.util.ArrayList<>();
-        
-     
-        for (Map.Entry<String, Integer> entrada : lista) {
-            String id = entrada.getKey();
-            Integer numCapturas = entrada.getValue();
-            
-            
-            resultado.add(id + " (" + numCapturas + " capturas)");
-            
-            // la practica ponia top 3
-            if (resultado.size() == 3) {
-                break;
-            }
+    List<String> top = new ArrayList<>();
+    List<Integer> capturasTop = new ArrayList<>();
+    for (String id : capturasDemogorgons.keySet()) {
+        int capturas = capturasDemogorgons.get(id);
+        int posicion = 0;
+        // Buscar dónde insertar según nº de capturas
+        while (posicion < capturasTop.size() && capturasTop.get(posicion) >= capturas) {
+            posicion++;
         }
-
-        return resultado;
+        // Insertar en la posición correcta
+        top.add(posicion, id + " (" + capturas + " capturas)");
+        capturasTop.add(posicion, capturas);
+        // Mantener solo top 3
+        if (top.size() > 3) {
+            top.remove(3);
+            capturasTop.remove(3);
+        }
     }
+    return top;
+}
     
     public synchronized void pausar() {
         enPausa = true;
