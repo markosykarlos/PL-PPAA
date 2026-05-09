@@ -31,20 +31,18 @@ public class Alcantarillado {
     public synchronized boolean salir(Nino n) {
         while (n.isSiendoAtacado()) {
             try {
-                System.out.println("El nino " + n.getIdNino() + " intenta huir del alcantarillado pero está bajo ataque");
+                System.out.println("El nino " + n.getIdNino() + " intenta huir del alcantarillado pero esta bajo ataque");
                 wait();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
-        
         ninosPresentes.remove(n);
-        
         if (n.isCapturado()) {
-            return false; // Fue llevado a la colmena
+            return false;
         } else {
             System.out.println("El nino " + n.getIdNino() + " sale del alcantarillado con su sangre.");
-            return true; // Logra salir
+            return true;
         }
     }
 
@@ -61,7 +59,7 @@ public class Alcantarillado {
     public synchronized void resolverAtaque(Nino n, boolean capturado) {
         n.setCapturado(capturado);
         n.setSiendoAtacado(false);
-        notifyAll(); // Despierta al niño bloqueado en salir()
+        notifyAll();
     }
 
     public synchronized int getNumeroNinos() {

@@ -50,7 +50,7 @@ public class VentanaClienteRMI extends JFrame {
         setVisible(true);
     }
 
-private void inicializarComponentes() {
+    private void inicializarComponentes() {
         // Panel superior
         JPanel panelSuperior = new JPanel(new GridLayout(1, 3, 10, 10));
         panelSuperior.setOpaque(false); // Hacemos transparente también el panel de arriba
@@ -85,7 +85,7 @@ private void inicializarComponentes() {
 
         // Centro: Portales arriba + Upside Down abajo
         JPanel centerPanel = new JPanel(new GridLayout(2, 1, 0, 10));
-        centerPanel.setOpaque(false); // Transparente!
+        centerPanel.setOpaque(false); // Transparente
         txtPortales = crearTextArea("ESTADO DE PORTALES");
         txtUpsideDown = crearTextArea("UPSIDE DOWN");
         
@@ -122,20 +122,17 @@ private void inicializarComponentes() {
         area.setFont(new Font("Monospaced", Font.PLAIN, 13));
         area.setForeground(new Color(50, 255, 50)); // Verde fosforito manual
 
-        // --- IMPORTANTE PARA LA TRANSPARENCIA ---
         area.setOpaque(false); // Esto hace que el fondo de la JTextArea desaparezca
-
        
         TitledBorder borde = BorderFactory.createTitledBorder(titulo);
         borde.setTitleColor(new Color(50, 255, 50));
         area.setBorder(borde);
-        
         return area;
     }
 
     private void conectarConServidor() {
         try {
-            servidor = (HawkinsRemote) Naming.lookup("rmi://localhost:1099/HawkinsServer");
+            servidor = (HawkinsRemote) Naming.lookup("//localhost/HawkinsServer");
             System.out.println("Conectado exitosamente al servidor RMI");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -155,20 +152,16 @@ private void inicializarComponentes() {
         try {
             // 1. Resumen Hawkins
             txtResumenHawkins.setText("Total niños en Hawkins: " + servidor.getTotalNinosEnHawkins()); 
-
             // 2. Portales
             txtPortales.setText(servidor.getEstadoPortales()); 
-
             // 3. Upside Down (Niños y Demogorgons)
             StringBuilder sb = new StringBuilder("=== UPSIDE DOWN ===\n\n"); 
-            
             // Sección Niños
             sb.append("--- NIÑOS ---\n");
             sb.append("Bosque: ").append(servidor.getNinosEnBosque()).append(" niños\n"); 
             sb.append("Laboratorio: ").append(servidor.getNinosEnLaboratorio()).append(" niños\n"); 
             sb.append("Centro Comercial: ").append(servidor.getNinosEnCentroComercial()).append(" niños\n"); 
             sb.append("Alcantarillado: ").append(servidor.getNinosEnAlcantarillado()).append(" niños\n\n"); 
-            
             // Sección Demogorgons
             sb.append("--- DEMOGORGONS ---\n");
             sb.append("Bosque: [").append(servidor.getDemogorgonsEnBosque()).append("] IDs: ")
@@ -183,7 +176,7 @@ private void inicializarComponentes() {
             // Colmena
             sb.append("Colmena (Capturados): ").append(servidor.getNinosEnColmena()).append(" niños"); 
             
-            // Ahora sí, actualizamos el JTextArea con todo el contenido acumulado
+            // Actualizamos el JTextArea con todo el contenido acumulado
             txtUpsideDown.setText(sb.toString()); 
 
             // 4. Ranking
@@ -233,7 +226,7 @@ private void inicializarComponentes() {
                     
                     imagenFondo = new ImageIcon(url).getImage();
                 } else {
-                    System.err.println("No se encontró la imagen de fondo en /cliente/fondo_retro.png");
+                    System.err.println("No se encontro la imagen");
                    
                     setBackground(new Color(15, 20, 15));
                 }

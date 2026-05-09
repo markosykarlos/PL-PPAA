@@ -26,7 +26,7 @@ public class VentanaServidor extends JFrame {
     private ZonaHawkins radioWSQK;
     private Portal portalBosque, portalLab, portalCC, portalAlc;
 
-    // CONSTRUCTOR ACTUALIZADO: Ahora acepta los 14 parámetros
+    // constructor que acepta los 14 parámetros
     public VentanaServidor(Sangre sangre, Colmena colmena, Bosque bosque, Laboratorio lab, CentroComercial cc, 
                            Alcantarillado alc, EstadoGlobal estado, Sotano sotano, ZonaHawkins calle, 
                            ZonaHawkins radio, Portal p1, Portal p2, Portal p3, Portal p4) {
@@ -48,8 +48,8 @@ public class VentanaServidor extends JFrame {
         
         
         try {
-            Color fondoTerminal = new Color(15, 20, 15); // Un negro con un toque ínfimo de verde oscuro
-            Color textoFosforo = new Color(50, 255, 50); // Verde brillante retro
+            Color fondoTerminal = new Color(15, 20, 15); // Negro con un toque pequeño de verde oscuro
+            Color textoFosforo = new Color(50, 255, 50); // Verde brillante
             Font fuenteRetro = new Font("Monospaced", Font.BOLD, 13); // Fuente de máquina de escribir
 
             // Fondos
@@ -194,7 +194,7 @@ public class VentanaServidor extends JFrame {
     }
 
 private void actualizarEvento() {
-        // En lugar de un switch básico, aprovechamos el método que ya cuenta los segundos
+        // Usamos el método que ya cuenta los segundos
         lblEventoGlobal.setText(estadoGlobal.getDescripcionEventoConTiempo());
     }
     

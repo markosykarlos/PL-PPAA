@@ -16,7 +16,7 @@ public class Colmena {
         return ninosCapturados.size();
     }
     
-    // NUEVO: Método para el evento de Eleven
+    // Método para el evento de Eleven
     public synchronized List<Nino> liberarNinos(int cantidadMaxima) {
         List<Nino> liberados = new ArrayList<>();
         int aLiberar = Math.min(cantidadMaxima, ninosCapturados.size());

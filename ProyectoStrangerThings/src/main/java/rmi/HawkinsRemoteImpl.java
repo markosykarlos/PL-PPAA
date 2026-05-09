@@ -46,7 +46,7 @@ public class HawkinsRemoteImpl extends UnicastRemoteObject implements HawkinsRem
         return ventana.getTotalNinosEnHawkins();
     }
 
-    // PORTALES
+    // Portales
     @Override
     public int getNinosEnPortal(int portalId) throws RemoteException {
         switch (portalId) {
@@ -66,7 +66,7 @@ public class HawkinsRemoteImpl extends UnicastRemoteObject implements HawkinsRem
                " | Alcantarillado: " + getNinosEnPortal(3);
     }
 
-    // NIÑOS EN UPSIDE DOWN
+    // Niños en Upside Down
     @Override
     public int getNinosEnBosque() throws RemoteException {
         return bosque.getNumeroNinos();
@@ -92,7 +92,7 @@ public class HawkinsRemoteImpl extends UnicastRemoteObject implements HawkinsRem
         return colmena.getTotalNinos();
     }
 
-    // DEMOGORGONS
+    // Demogorgon
     @Override
     public int getDemogorgonsEnBosque() throws RemoteException {
         return bosque.getNumeroDemogorgons();
@@ -113,32 +113,31 @@ public class HawkinsRemoteImpl extends UnicastRemoteObject implements HawkinsRem
         return alcantarillado.getNumeroDemogorgons();
     }
 
-    // RANKING
+    // Ranking
  @Override
     public List<String> getRankingDemogorgons() throws RemoteException {
-        
         return estadoGlobal.obtenerTopDemogorgons();
     }
 
-    // EVENTO GLOBAL
+    // Evento global
     @Override
     public String getEstadoEventoGlobal() throws RemoteException {
         return estadoGlobal.getDescripcionEventoConTiempo();
     }
 
-    // CONTROL DE EJECUCIÓN
+    // Control
 @Override
     public void pausarEjecucion() throws RemoteException {
         ejecutando = false;
         estadoGlobal.pausar();
-        System.out.println("[RMI] Sistema PAUSADO remotamente");
+        System.out.println("Sistema pausado remotamente");
     }
 
     @Override
     public void reanudarEjecucion() throws RemoteException {
         ejecutando = true;
         estadoGlobal.reanudar();
-        System.out.println("[RMI] Sistema REANUDADO remotamente");
+        System.out.println("Sistema reanudado remotamente");
     }
 
     @Override

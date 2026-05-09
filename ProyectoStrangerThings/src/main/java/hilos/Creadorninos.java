@@ -48,9 +48,10 @@ public class Creadorninos extends Thread {
         System.out.println("empezamos a generar ninos");
         for (int i = 1; i <= TOTAL_NINOS; i++) {
             estadoGlobal.chequearPausa();
-            Nino nuevoNino = new Nino(i, sotano, bosque, laboratorio, centrocomercial, alcantarillado, portalBosque, portalLab, portalCC, portalAlc, estadoGlobal, sangre, callePrincipal, radioWSQK);
+            Nino nuevoNino = new Nino(i, sotano, bosque, laboratorio, centrocomercial, 
+                                      alcantarillado, portalBosque, portalLab, portalCC, portalAlc, 
+                                      estadoGlobal, sangre, callePrincipal, radioWSQK);
             nuevoNino.start();
-            
             try {
                 int tiempoEspera = 500 + random.nextInt(1501);
                 Thread.sleep(tiempoEspera);

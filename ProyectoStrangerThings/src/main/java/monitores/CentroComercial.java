@@ -31,15 +31,13 @@ public class CentroComercial {
     public synchronized boolean salir(Nino n) {
         while (n.isSiendoAtacado()) {
             try {
-                System.out.println("El nino " + n.getIdNino() + " intenta huir del centro comercial pero está bajo ataque");
+                System.out.println("El nino " + n.getIdNino() + " intenta huir del centro comercial pero esta bajo ataque");
                 wait();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
-        
         ninosPresentes.remove(n);
-        
         if (n.isCapturado()) {
             return false;
         } else {

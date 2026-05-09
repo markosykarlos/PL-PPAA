@@ -31,15 +31,13 @@ public class Bosque {
     public synchronized boolean salir(Nino n) {
         while (n.isSiendoAtacado()) {
             try {
-                System.out.println("El nino " + n.getIdNino() + " intenta huir del bosque pero está bajo ataque");
+                System.out.println("El nino " + n.getIdNino() + " intenta huir del bosque pero esta bajo ataque");
                 wait();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
-        
         ninosPresentes.remove(n);
-        
         if (n.isCapturado()) {
             return false;
         } else {
@@ -61,7 +59,7 @@ public class Bosque {
     public synchronized void resolverAtaque(Nino n, boolean capturado) {
         n.setCapturado(capturado);
         n.setSiendoAtacado(false);
-        notifyAll(); // Despierta al niño bloqueado en salir()
+        notifyAll();
     }
 
     public synchronized int getNumeroNinos() {

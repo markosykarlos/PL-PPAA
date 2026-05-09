@@ -21,7 +21,6 @@ public class EstadoGlobal {
  public synchronized void setEventoActivo(int nuevoEvento, int duracionMs) {
         this.eventoActivo = nuevoEvento;
         if (nuevoEvento != NINGUNO) {
-            // Ya no usamos el Random aquí, usamos la duración que nos mandan
             this.tiempoFinEvento = System.currentTimeMillis() + duracionMs;
         }
         else {
@@ -34,15 +33,12 @@ public class EstadoGlobal {
         return eventoActivo;
     }
     
-    /**
-     * Método clave para la Parte 2 (RMI)
-     * Devuelve una descripción del evento + tiempo restante
-     */
+     // Método para la Parte 2
+     // Devuelve una descripción del evento + tiempo restante
     public synchronized String getDescripcionEventoConTiempo() {
         if (eventoActivo == NINGUNO) {
             return "Sin evento activo";
         }
-
         String nombreEvento = switch (eventoActivo) {
             case APAGON_LABORATORIO -> "APAGON DEL LABORATORIO";
             case TORMENTA_UPSIDEDOWN -> "TORMENTA DEL UPSIDE DOWN";

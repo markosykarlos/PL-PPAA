@@ -25,21 +25,17 @@ public class Portal {
     }
 
     public void cruzarHaciaUpside(Nino n) {
-        // ESO ES PARA SOLO PONER UNA PARTE DEL CODIGO EN SYNCHRONIZED
+        // solo una parte del código en synchronized
         synchronized(this) {
             esperandoIda++;
             contador++;                                   
             n.setGrupoportal(grupoactual);
-            
-            // Lo añadimos a la cola visible en la UI
             ninosEsperando.add(n.getIdNino() + "(G" + grupoactual + ")");
-
             if (contador % capacidad == 0) {
                 gruposListos.add(grupoactual);
                 grupoactual++;
                 notifyAll(); 
             }
-            
             while (esperandoVuelta > 0 || 
                    gruposListos.isEmpty() || 
                    n.getGrupoportal() != gruposListos.get(0) ||
@@ -52,26 +48,21 @@ public class Portal {
                     return;
                 }
             }
-            
             ocupado = true;
             esperandoIda--; 
-            
             // Pasa de "esperando" a "en tránsito"
             ninosEsperando.remove(n.getIdNino() + "(G" + n.getGrupoportal() + ")");
             enTransito.add(n.getIdNino() + "(->)");
         }
-
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-
         synchronized(this) {
             grupoCruzado++;
             ocupado = false;
             enTransito.remove(n.getIdNino() + "(->)");
-            
             if (grupoCruzado == capacidad) {
                 gruposListos.remove(0); 
                 grupoCruzado = 0;
@@ -93,10 +84,8 @@ public class Portal {
                     return;
                 }
             }
-
             ocupado = true;
             esperandoVuelta--; 
-            
             ninosEsperando.remove(n.getIdNino() + "(VUELTA)");
             enTransito.add(n.getIdNino() + "(<-)");
         } 
@@ -113,20 +102,15 @@ public class Portal {
             notifyAll();
         }
     }
-
-    // Nuevo getIDs() para mostrar quién espera y quién cruza
+//Para mostrar quien espera y quien cruza
 public synchronized String getIDs() {
     String textoEsperando;
     String textoCruzando;
-
-    // Comprobamos la cola de espera
     if (ninosEsperando.isEmpty()) {
         textoEsperando = "Nadie";
     } else {
         textoEsperando = String.join(", ", ninosEsperando);
     }
-
-    // Comprobamos los que están cruzando
     if (enTransito.isEmpty()) {
         textoCruzando = "Libre";
     } else {

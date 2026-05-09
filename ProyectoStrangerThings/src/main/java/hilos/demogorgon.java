@@ -40,31 +40,24 @@ public class Demogorgon extends Thread {
                     estadoGlobal.chequearPausa();
                     continue;
                 }
-
                 int zonaDestino = decidirSiguienteZona();
-                
                 if (estadoGlobal.getEventoActivo() == EstadoGlobal.APAGON_LABORATORIO && zonaActual != -1) {
                     zonaDestino = zonaActual;
                 }
-
                 Nino presa = entrarYBuscarPresa(zonaDestino);
                 estadoGlobal.chequearPausa();
                 if (zonaActual != -1) salirDeZona(zonaActual, idDemogorgon);
                 entrarEnZona(zonaDestino, idDemogorgon);
                 zonaActual = zonaDestino;
-
                 if (presa != null) {
                     int tiempoAtaque = 500 + r.nextInt(1001);
                     if (estadoGlobal.getEventoActivo() == EstadoGlobal.TORMENTA_UPSIDEDOWN) {
                         tiempoAtaque /= 2;
                     }
-
                     boolean resiste = presa.serAtacado(tiempoAtaque);
                     estadoGlobal.chequearPausa();
                     boolean capturado = !resiste;
-                    
                     resolverAtaqueEnZona(zonaActual, presa, capturado);
-
                     if (capturado) {
                         Thread.sleep(500 + r.nextInt(501)); 
                         estadoGlobal.chequearPausa();
@@ -77,7 +70,7 @@ public class Demogorgon extends Thread {
                             int nuevoId = Mainservidor.contadorDemogorgons++;
                             Demogorgon nuevoDemo = new Demogorgon(nuevoId, sotano, bosque, laboratorio, centroComercial, alcantarillado, colmena, estadoGlobal, sangre);
                             nuevoDemo.start();
-                            System.out.println("Vecna ha creaddo un nuevo Demogorgon: " + nuevoDemo.idDemogorgon);
+                            System.out.println("Vecna ha creado un nuevo Demogorgon: " + nuevoDemo.idDemogorgon);
                         }
                     }
                 } else {

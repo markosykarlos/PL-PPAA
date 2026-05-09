@@ -26,7 +26,6 @@ public class Nino extends Thread {
     private boolean capturado = false;
     private boolean siendoAtacado = false;
     private int grupoportal = -1;
-
     
     public Nino(int idNumerico, Sotano psotano, Bosque pbosque, Laboratorio plaboratorio, CentroComercial pcentrocomercial, Alcantarillado palcantarillado, Portal pportalBosque, Portal pportalLab, Portal pportalCC, Portal pportalAlc, EstadoGlobal e, Sangre san, ZonaHawkins calle, ZonaHawkins radio) {
         this.idNino = String.format("N%04d", idNumerico);
@@ -58,11 +57,9 @@ public class Nino extends Thread {
                 estadoGlobal.chequearPausa();
                 sotano.salir(idNino);
                 estadoGlobal.chequearPausa();
-
                 // 2. Elegir portal y zona
                 int portalElegido = r.nextInt(4);
                 boolean sigueVivo = true;
-
                 switch (portalElegido) {
                     case 0:
                         portalBosque.cruzarHaciaUpside(this);
@@ -108,25 +105,22 @@ public class Nino extends Thread {
                             estadoGlobal.chequearPausa();}
                         break;
                 }
-
-                // Si fue capturado, espera aquí hasta que Eleven lo rescate
+                // Si fue capturado, espera aquí a que Eleven lo rescate
                 if (!sigueVivo) {
                     esperarRescate();
                 } else {
                     // 3. Regreso exitoso: Depositar sangre y Radio
                     sangre.anadirSangre();
                     radioWSQK.entrar(idNino);
-                    Thread.sleep(2000 + r.nextInt(2001)); // Entre 2 y 4 segundos
+                    Thread.sleep(2000 + r.nextInt(2001));
                     estadoGlobal.chequearPausa();
                     radioWSQK.salir(idNino);
                 }
-
-                // 4. Calle Principal (tanto si vuelve sano como si es rescatado por Eleven)
+                // 4. Calle Principal tanto si vuelve sano como si es rescatado por Eleven
                 callePrincipal.entrar(idNino);
                 Thread.sleep(3000 + r.nextInt(2001));
                 estadoGlobal.chequearPausa();
                 callePrincipal.salir(idNino);
-
             } catch (InterruptedException e) {
                 System.out.println(idNino + " ha sido interrumpido.");
             }
@@ -147,7 +141,6 @@ public class Nino extends Thread {
         try {
             Thread.sleep(tiempoAtaque);
         } catch (InterruptedException e) {}
-        
         boolean resiste = (r.nextInt(3) != 0); 
         if (!resiste) {
             capturado = true;
@@ -166,16 +159,13 @@ public class Nino extends Thread {
         this.capturado = false;
         notifyAll();
     }
-
     
     public String getIdNino() { return idNino; }
     public boolean isSiendoAtacado() { return siendoAtacado; }
     public void setSiendoAtacado(boolean b) { siendoAtacado = b; }
     public boolean isCapturado() { return capturado; }
     public void setCapturado(boolean b) { capturado = b; }
-    public int getGrupoportal() {
-        return grupoportal;
-    }
+    public int getGrupoportal() { return grupoportal; }
     public void setGrupoportal(int grupoportal) {
         this.grupoportal = grupoportal;
     }

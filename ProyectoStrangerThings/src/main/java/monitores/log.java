@@ -17,11 +17,9 @@ public class Log {
     public synchronized void escribir(String mensaje) {
         String fechaHora = LocalDateTime.now().format(formatoFecha);
         String lineaLog = "[" + fechaHora + "] " + mensaje;
-        
         // Imprimimos para verlo tambien en netbeans
         System.out.println(lineaLog);
-        
-        // Guardamos en el archivo (el 'true' es para añadir, no sobreescribir)
+        // Guardamos en el archivo, el true es para añadir, no sobreescribir
         try (PrintWriter out = new PrintWriter(new FileWriter(rutaArchivo, true))) {
             out.println(lineaLog);
         } catch (IOException e) {
