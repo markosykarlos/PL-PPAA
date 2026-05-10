@@ -10,7 +10,7 @@ public class Portal {
     private boolean ocupado = false;
     private EstadoGlobal estadoGlobal;
     
-    // Listas para la interfaz gráfica
+    
     private ArrayList<String> enTransito = new ArrayList<>();
     private ArrayList<String> ninosEsperando = new ArrayList<>(); 
     
@@ -25,18 +25,24 @@ public class Portal {
     }
 
     public void cruzarHaciaUpside(Nino n) {
-        // solo una parte del código en synchronized
+      
+        estadoGlobal.chequearPausa();
+
         synchronized(this) {
             esperandoIda++;
             contador++;                                   
             n.setGrupoportal(grupoactual);
+            
+            
             ninosEsperando.add(n.getIdNino() + "(G" + grupoactual + ")");
+            
             if (contador % capacidad == 0) {
                 gruposListos.add(grupoactual);
                 grupoactual++;
                 notifyAll(); 
             }
-            estadoGlobal.chequearPausa();
+            
+            
             while (esperandoVuelta > 0 || 
                    gruposListos.isEmpty() || 
                    n.getGrupoportal() != gruposListos.get(0) ||
@@ -49,35 +55,43 @@ public class Portal {
                     return;
                 }
             }
+            
             ocupado = true;
             esperandoIda--; 
-            // Pasa de "esperando" a "en tránsito"
+            
+            
             ninosEsperando.remove(n.getIdNino() + "(G" + n.getGrupoportal() + ")");
             enTransito.add(n.getIdNino() + "(->)");
         }
+
         try {
             Thread.sleep(1000);
             estadoGlobal.chequearPausa();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+
         synchronized(this) {
             grupoCruzado++;
             ocupado = false;
             enTransito.remove(n.getIdNino() + "(->)");
+            
             if (grupoCruzado == capacidad) {
-                gruposListos.remove(0); 
+                gruposListos.remove(0);
                 grupoCruzado = 0;
             }
-            notifyAll(); 
+            notifyAll();
         }
     }
 
     public void cruzarHaciaHawkins(Nino n) {
+   
+        estadoGlobal.chequearPausa();
+
         synchronized(this) {
             esperandoVuelta++;
             ninosEsperando.add(n.getIdNino() + "(VUELTA)");
-            estadoGlobal.chequearPausa();
+            
             while (ocupado || estadoGlobal.getEventoActivo() == EstadoGlobal.APAGON_LABORATORIO) {
                 try {
                     wait();
@@ -86,40 +100,48 @@ public class Portal {
                     return;
                 }
             }
+
             ocupado = true;
             esperandoVuelta--; 
+            
             ninosEsperando.remove(n.getIdNino() + "(VUELTA)");
             enTransito.add(n.getIdNino() + "(<-)");
         } 
+
         try {
-            Thread.sleep(1000);
+            Thread.sleep(1000); 
+            
             estadoGlobal.chequearPausa();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+
         synchronized(this) {
             ocupado = false;
             enTransito.remove(n.getIdNino() + "(<-)");
             notifyAll();
         }
     }
-//Para mostrar quien espera y quien cruza
-public synchronized String getIDs() {
-    String textoEsperando;
-    String textoCruzando;
-    if (ninosEsperando.isEmpty()) {
-        textoEsperando = "Nadie";
-    } else {
-        textoEsperando = String.join(", ", ninosEsperando);
-    }
-    if (enTransito.isEmpty()) {
-        textoCruzando = "Libre";
-    } else {
-        textoCruzando = String.join(", ", enTransito);
-    }
 
-    return "Cola: " + textoEsperando + "\nCruzando: " + textoCruzando;
-}
+    
+    public synchronized String getIDs() {
+        String textoEsperando;
+        String textoCruzando;
+
+        if (ninosEsperando.isEmpty()) {
+            textoEsperando = "Nadie";
+        } else {
+            textoEsperando = String.join(", ", ninosEsperando);
+        }
+
+        if (enTransito.isEmpty()) {
+            textoCruzando = "Libre";
+        } else {
+            textoCruzando = String.join(", ", enTransito);
+        }
+
+        return "Cola: " + textoEsperando + "\nCruzando: " + textoCruzando;
+    }
 
     public synchronized int getNumeroNinosEsperando() {
         return esperandoIda + esperandoVuelta + enTransito.size();
